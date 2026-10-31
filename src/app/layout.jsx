@@ -1,5 +1,4 @@
 import "pretendard/dist/web/static/pretendard.css";
-import { UsualDrugsProvider } from "@/components/UsualDrugsProvider";
 import "./globals.css";
 
 export const metadata = {
@@ -23,7 +22,7 @@ export default function RootLayout({ children }) {
       <body className="flex min-h-full justify-center">
         {/* 앱 영역: 기준 폭 390px, 최대 430px. 넓은 화면에서는 모서리 24px */}
         <div className="bg-surface flex min-h-dvh w-full max-w-[430px] flex-col min-[431px]:my-6 min-[431px]:min-h-[calc(100dvh-3rem)] min-[431px]:rounded-xl">
-          <UsualDrugsProvider>{children}</UsualDrugsProvider>
+          {children}
         </div>
       </body>
     </html>

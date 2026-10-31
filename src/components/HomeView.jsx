@@ -64,8 +64,8 @@ export function HomeView() {
           theme="gray"
           badge="평소 복약"
           title="평소 복약 시간표"
-          description="평소 먹는 약을 골라 하루 시간표에 모아 볼 수 있어요"
-          action="시간표 보기"
+          description="평소 먹는 약과 생활 시간을 알려 주면 하루 시간표를 만들어 줘요"
+          action="시간표 만들기"
           icon={<Clock className="size-6" strokeWidth={2} aria-hidden />}
           href="/usual"
         />

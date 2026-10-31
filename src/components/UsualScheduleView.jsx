@@ -1,14 +1,8 @@
-"use client";
-
 import Link from "next/link";
 import { Moon, Sun, Utensils } from "lucide-react";
-import { ChoiceChip } from "@/components/ChoiceChip";
 import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
-import { useUsualDrugs } from "@/components/UsualDrugsProvider";
-import { findDrug, listDrugs } from "@/lib/drugs";
-import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import { buildUsualSchedule } from "@/lib/usualSchedule";
 
 const SLOT_ICONS = {
@@ -19,19 +13,18 @@ const SLOT_ICONS = {
   sleep: Moon,
 };
 
-export function UsualScheduleView() {
-  const { selected, setSelected } = useUsualDrugs();
-  const times = DEFAULT_LIFE_TIMES;
-  const drugs = selected.map(findDrug).filter((drug) => drug !== null);
+/**
+ * @param {object} props
+ * @param {import("@/types").DrugInfo[]} props.drugs 입력한 약
+ * @param {import("@/types").LifeTimes} props.times
+ * @param {string} props.backHref 입력 화면으로 돌아가 약이나 시간을 고친다
+ */
+export function UsualScheduleView({ drugs, times, backHref }) {
   const { slots, unschedulable } = buildUsualSchedule(drugs, times);
-
-  function toggle(name) {
-    setSelected(selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name]);
-  }
 
   return (
     <>
-      <NavBar title="평소 복약 시간표" backHref="/" />
+      <NavBar title="평소 복약 시간표" backHref={backHref} />
       <div className="flex flex-1 flex-col gap-8 px-5 pb-6">
         <div className="flex flex-col gap-1">
           <p className="text-eyebrow text-ink-secondary tabular">
@@ -39,22 +32,6 @@ export function UsualScheduleView() {
           </p>
           <h2 className="text-display">하루 복약 시간표</h2>
         </div>
-
-        <section className="flex flex-col gap-3">
-          <h2 className="text-title-md">복용하는 약</h2>
-          <p className="text-body-md text-ink-secondary">먹는 약을 모두 눌러 주세요</p>
-          <div className="grid grid-cols-2 gap-3">
-            {listDrugs().map((name) => (
-              <ChoiceChip
-                key={name}
-                selected={selected.includes(name)}
-                onClick={() => toggle(name)}
-              >
-                {name}
-              </ChoiceChip>
-            ))}
-          </div>
-        </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-title-md">복용 시각</h2>
@@ -77,7 +54,7 @@ export function UsualScheduleView() {
                       </span>
                       <span className="text-title-sm">{label}</span>
                       <span className="text-body-md text-ink-secondary">
-                        {drugs.length === 0 ? "등록한 약이 없습니다" : "복용하는 약이 없습니다"}
+                        복용하는 약이 없습니다
                       </span>
                     </div>
                     <span className="bg-ink-secondary text-on-primary flex size-12 shrink-0 items-center justify-center rounded-md">

@@ -1,15 +1,7 @@
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { ResultDetails } from "@/components/ResultDetails";
-import type { LookupResult } from "@/types";
-
-interface ResultViewProps {
-  result: LookupResult;
-  onBack: () => void;
-  onNext: () => void;
-}
-
-export function ResultView({ result, onBack, onNext }: ResultViewProps) {
+export function ResultView({ result, onBack, onNext }) {
   return (
     <>
       <NavBar title="결과" onBack={onBack} />

@@ -1,26 +1,19 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { ResultDetails } from "@/components/ResultDetails";
 import { lookupByGenotype } from "@/lib/genes";
-
-export const metadata: Metadata = { title: "결과" };
-
-type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
-function first(value: string | string[] | undefined): string {
+export const metadata = { title: "결과" };
+function first(value) {
   return (Array.isArray(value) ? value[0] : value) ?? "";
 }
-
 /** /result?gene=CYP2D6&genotype=*1/*1x2 처럼 유전자와 유전형을 받아 결과를 보여 준다 */
-async function Result({ searchParams }: { searchParams: SearchParams }) {
+async function Result({ searchParams }) {
   const params = await searchParams;
   return <ResultDetails result={lookupByGenotype(first(params.gene), first(params.genotype))} />;
 }
-
-export default function ResultPage({ searchParams }: { searchParams: SearchParams }) {
+export default function ResultPage({ searchParams }) {
   return (
     <>
       <NavBar title="결과" backHref="/" />

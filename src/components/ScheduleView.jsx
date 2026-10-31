@@ -2,18 +2,8 @@ import { Pill } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { buildSchedule } from "@/lib/schedule";
-import type { GeneEntry, ScheduleInput } from "@/types";
-
-interface ScheduleViewProps {
-  input: ScheduleInput;
-  entry: GeneEntry | null;
-  onBack: () => void;
-  onRestart: () => void;
-}
-
-export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewProps) {
+export function ScheduleView({ input, entry, onBack, onRestart }) {
   const result = entry ? buildSchedule(entry, input) : null;
-
   const lifeTimes = [
     { label: "기상", time: input.wakeTime },
     { label: "아침", time: input.breakfast },
@@ -21,7 +11,6 @@ export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewPr
     { label: "저녁", time: input.dinner },
     { label: "취침", time: input.sleepTime },
   ];
-
   return (
     <>
       <NavBar title="복약 시간표" onBack={onBack} />

@@ -1,7 +1,5 @@
 import { Pill, TriangleAlert } from "lucide-react";
-import type { LookupResult } from "@/types";
-
-function InfoRow({ name, value }: { name: string; value: string }) {
+function InfoRow({ name, value }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
       <span className="text-label text-ink-secondary shrink-0">{name}</span>
@@ -9,9 +7,8 @@ function InfoRow({ name, value }: { name: string; value: string }) {
     </div>
   );
 }
-
 /** 유전자·유전형 조회 결과: 추천 약, 복용 정보, 주의, 근거. 자료가 없으면 회색 카드 */
-export function ResultDetails({ result }: { result: LookupResult }) {
+export function ResultDetails({ result }) {
   if (result.status === "no_data") {
     return (
       <div className="flex flex-col items-start gap-3">
@@ -23,9 +20,7 @@ export function ResultDetails({ result }: { result: LookupResult }) {
       </div>
     );
   }
-
   const { gene, drug } = result;
-
   return (
     <>
       <div className="flex flex-col items-start gap-2">

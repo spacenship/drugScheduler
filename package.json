@@ -9,8 +9,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "typecheck": "next typegen && tsc --noEmit"
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "lucide-react": "^1.65.0",
@@ -21,16 +20,12 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "tailwindcss": "^4"
   },
   "engines": {
     "node": ">=22"

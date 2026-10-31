@@ -1,21 +1,12 @@
 "use client";
-
 import { useState } from "react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { DEFAULT_LIFE_TIMES, LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
-import type { LifeTimes, ScheduleInput } from "@/types";
-
-interface ScheduleFormProps {
-  /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
-  initial: ScheduleInput | null;
-  onSubmit: (input: ScheduleInput) => void;
-}
-
-export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
+export function ScheduleForm({ initial, onSubmit }) {
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
-  const [times, setTimes] = useState<LifeTimes>(
+  const [times, setTimes] = useState(
     initial
       ? {
           wakeTime: initial.wakeTime,
@@ -26,23 +17,19 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
         }
       : DEFAULT_LIFE_TIMES,
   );
-
   const genotypes = listGenotypes(gene);
   const canSubmit = gene !== "" && genotype !== "" && Object.values(times).every(Boolean);
-
-  function selectGene(next: string) {
+  function selectGene(next) {
     setGene(next);
     // 유전형이 하나뿐이면 바로 고른다
     const options = listGenotypes(next);
     setGenotype(options.length === 1 ? options[0] : "");
   }
-
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event) {
     event.preventDefault();
     if (!canSubmit) return;
     onSubmit({ gene, genotype, ...times });
   }
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">

@@ -1,8 +1,6 @@
 "use client";
-
 import { InfoNotice } from "@/components/InfoNotice";
 import { MedicationForm } from "@/components/MedicationForm";
-
 export default function MedicationsPage() {
   return (
     <main className="flex flex-1 flex-col gap-8 px-5 py-6">

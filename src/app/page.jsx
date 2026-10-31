@@ -1,21 +1,15 @@
 "use client";
-
 import { useState } from "react";
 import { InfoNotice } from "@/components/InfoNotice";
 import { ResultView } from "@/components/ResultView";
 import { ScheduleForm } from "@/components/ScheduleForm";
 import { ScheduleView } from "@/components/ScheduleView";
 import { lookupByGenotype } from "@/lib/genes";
-import type { ScheduleInput } from "@/types";
-
-type Step = "input" | "result" | "schedule";
-
 export default function Home() {
-  const [step, setStep] = useState<Step>("input");
-  const [input, setInput] = useState<ScheduleInput | null>(null);
+  const [step, setStep] = useState("input");
+  const [input, setInput] = useState(null);
   const result = input ? lookupByGenotype(input.gene, input.genotype) : null;
   const entry = result?.status === "found" ? result.gene : null;
-
   if (result && step === "result") {
     return (
       <ResultView
@@ -25,7 +19,6 @@ export default function Home() {
       />
     );
   }
-
   if (input && step === "schedule") {
     return (
       <ScheduleView
@@ -39,7 +32,6 @@ export default function Home() {
       />
     );
   }
-
   return (
     <main className="flex flex-1 flex-col gap-8 px-5 py-6">
       <InfoNotice>교육용 시뮬레이터입니다. 실제 처방이 아닙니다</InfoNotice>

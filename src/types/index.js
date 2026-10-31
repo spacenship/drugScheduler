@@ -1,0 +1,80 @@
+// 자료 구조 설명용 JSDoc 타입 정의. 실행 코드는 없고, 편집기에서 `import("@/types").이름`으로 가져다 쓴다.
+
+/**
+ * any = 식사 무관 / after = 식후 / empty = 공복
+ * @typedef {"any" | "after" | "empty"} Meal
+ */
+
+/**
+ * 시간표 계산용 복용 규칙 (data.json / gene_data.json의 schedule)
+ * @typedef {{ type: "daily", timesPerDay: number, meal: Meal, minutesAfterMeal?: number }
+ *   | { type: "interval", everyHours: number, meal: Meal, minutesAfterMeal?: number }
+ *   | { type: "every_n_days", everyDays: number, meal: Meal, minutesAfterMeal?: number }} Schedule
+ */
+
+/**
+ * data/data.json의 drugs[약 명칭] 한 건
+ * @typedef {object} DrugInfo
+ * @property {string} drugName
+ * @property {string} ingredient
+ * @property {string} mealRelation
+ * @property {string} dosingInterval
+ * @property {string} sideEffects
+ * @property {string} source
+ * @property {Schedule} schedule
+ */
+
+/**
+ * data/gene_data.json의 genes[유전자][유전형] 한 건
+ * @typedef {DrugInfo & { gene: string, genotype: string, details: string }} GeneEntry
+ */
+
+/**
+ * 유전형으로 약을 찾은 결과: 유전형 권고(gene)와 약 기본 정보(drug)를 약 이름으로 연결한다
+ * @typedef {{ status: "found", gene: GeneEntry, drug: DrugInfo }
+ *   | { status: "no_data", message: string, detail: string }} LookupResult
+ */
+
+/**
+ * 생활 시간. 시각은 "HH:mm" 형식
+ * @typedef {object} LifeTimes
+ * @property {string} wakeTime
+ * @property {string} sleepTime
+ * @property {string} breakfast
+ * @property {string} lunch
+ * @property {string} dinner
+ */
+
+/**
+ * 유전형 입력 화면에서 받는 값
+ * @typedef {LifeTimes & { gene: string, genotype: string }} ScheduleInput
+ */
+
+/**
+ * 평소 복용하는 약 한 가지
+ * @typedef {object} Medication
+ * @property {string} name
+ * @property {number} timesPerDay
+ * @property {Meal} meal
+ */
+
+/**
+ * 복용 약 입력 화면에서 받는 값
+ * @typedef {LifeTimes & { medications: Medication[] }} MedicationScheduleInput
+ */
+
+/**
+ * 하루 시간표의 복용 한 번
+ * @typedef {object} DoseSlot
+ * @property {number} minutes 하루 0시부터의 분. 자정을 넘기면 1440 이상
+ * @property {string} time "HH:mm"
+ * @property {string} note 시각을 정한 이유. 예: "아침 식사 30분 뒤"
+ */
+
+/**
+ * 시간표 계산 결과. 시각을 정할 수 없으면 이유를 돌려준다
+ * @typedef {{ status: "ok", doses: DoseSlot[] }
+ *   | { status: "unschedulable", reason: string }} ScheduleResult
+ */
+
+export {};

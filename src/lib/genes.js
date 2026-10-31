@@ -39,6 +39,11 @@ function noDataResult(reason, query) {
   return { status: "no_data", ...noData, reason, query };
 }
 
+/** data.json에 있는 약 이름 목록. 약 이름 입력의 자동완성에 쓴다 */
+export function listDrugNames() {
+  return Object.keys(drugs);
+}
+
 /** 약 이름으로 data.json의 약 기본 정보를 찾는다. 없으면 null */
 export function getDrug(drugName) {
   return Object.hasOwn(drugs, drugName) ? drugs[drugName] : null;

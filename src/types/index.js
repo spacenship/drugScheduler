@@ -78,8 +78,18 @@
  */
 
 /**
+ * 평소 복약 입력의 생활 시간. 끼니를 거르면 그 시각이 null이다
+ * @typedef {object} MedicationLifeTimes
+ * @property {string} wakeTime
+ * @property {string} sleepTime
+ * @property {string | null} breakfast
+ * @property {string | null} lunch
+ * @property {string | null} dinner
+ */
+
+/**
  * 복용 약 입력 화면에서 받는 값
- * @typedef {LifeTimes & { medications: Medication[] }} MedicationScheduleInput
+ * @typedef {MedicationLifeTimes & { medications: Medication[] }} MedicationScheduleInput
  */
 
 /**

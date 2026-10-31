@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { Plus, Trash2 } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { LifeTimeFields } from "@/components/LifeTimeFields";
+import { WarningNotice } from "@/components/WarningNotice";
+import { getDrug, listDrugNames } from "@/lib/genes";
 import { TIMES_PER_DAY_OPTIONS } from "@/lib/medications";
 import { toMedicationQuery } from "@/lib/query";
-import { DEFAULT_LIFE_TIMES } from "@/lib/time";
+import { DEFAULT_LIFE_TIMES, MEALS } from "@/lib/time";
 
-/** 입력 중인 약. 복용 횟수와 식사 관계는 고르기 전까지 null */
+/** 입력 중인 약. 복용 횟수와 식사 관계는 고르기 전까지 null. touched는 이름 칸에서 한 번 벗어났는지 */
 
 const MEAL_OPTIONS = [
   { value: "after", label: "식후" },
@@ -18,7 +20,7 @@ const MEAL_OPTIONS = [
 ];
 
 function emptyDraft(id) {
-  return { id, name: "", timesPerDay: null, meal: null };
+  return { id, name: "", timesPerDay: null, meal: null, touched: false };
 }
 
 /** 모두 채워졌을 때만 약 정보로 바꾼다 */
@@ -37,7 +39,7 @@ export function MedicationForm({ initial }) {
   const router = useRouter();
   const [drafts, setDrafts] = useState(
     initial && initial.medications.length > 0
-      ? initial.medications.map((med, id) => ({ id, ...med }))
+      ? initial.medications.map((med, id) => ({ id, ...med, touched: true }))
       : [emptyDraft(0)],
   );
   const [times, setTimes] = useState(
@@ -65,6 +67,10 @@ export function MedicationForm({ initial }) {
 
   const canSubmit = drafts.every((draft) => toMedication(draft) !== null);
 
+  // 식후 약이 있는데 거른 끼니가 있으면 안내한다(제출은 막지 않는다)
+  const skippedMeals = MEALS.filter(({ key }) => times[key] === null).map(({ label }) => label);
+  const showSkipWarning = skippedMeals.length > 0 && drafts.some((draft) => draft.meal === "after");
+
   function updateDraft(id, patch) {
     setDrafts((prev) => prev.map((draft) => (draft.id === id ? { ...draft, ...patch } : draft)));
   }
@@ -88,6 +94,11 @@ export function MedicationForm({ initial }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <h2 className="text-title-md">복용하는 약</h2>
+        <datalist id="drug-names">
+          {listDrugNames().map((name) => (
+            <option key={name} value={name} />
+          ))}
+        </datalist>
         <ul className="flex flex-col gap-3">
           {drafts.map((draft, index) => (
             <li key={draft.id} className="border-border flex flex-col gap-5 rounded-lg border p-5">
@@ -111,12 +122,29 @@ export function MedicationForm({ initial }) {
                   type="text"
                   required
                   autoComplete="off"
-                  placeholder="예: 아스피린"
+                  list="drug-names"
+                  placeholder="예: 코데인"
                   value={draft.name}
                   onChange={(e) => updateDraft(draft.id, { name: e.target.value })}
+                  onBlur={() => updateDraft(draft.id, { touched: true })}
                   className="bg-surface-muted text-body-lg placeholder:text-ink-secondary h-14 rounded-md px-4"
                 />
               </label>
+
+              {draft.touched && draft.name.trim() !== "" && getDrug(draft.name.trim()) === null && (
+                <div
+                  role="status"
+                  className="bg-surface-muted flex flex-col items-start gap-2 rounded-md p-4"
+                >
+                  <span className="bg-ink-secondary text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5">
+                    찾을 수 없는 정보
+                  </span>
+                  <p className="text-body-md">
+                    입력한 약을 약 정보 표에서 찾을 수 없어요. 이름을 다시 확인해 주세요. 시간표는
+                    그대로 만들 수 있어요.
+                  </p>
+                </div>
+              )}
 
               <fieldset className="min-w-0">
                 <legend className="text-label text-ink-secondary mb-2">하루 복용 횟수</legend>
@@ -163,7 +191,15 @@ export function MedicationForm({ initial }) {
       <LifeTimeFields
         times={times}
         onChange={(key, value) => setTimes((prev) => ({ ...prev, [key]: value }))}
+        skippableMeals
       />
+
+      {showSkipWarning && (
+        <WarningNotice>
+          식후 약이 있는데 {skippedMeals.join(", ")}을 안 드세요. 식후 약은 식사 뒤에 먹는 약이라
+          복용 시간을 정하기 어려울 수 있어요. 가볍게라도 드시거나 의료진·약사와 상의하세요.
+        </WarningNotice>
+      )}
 
       <button
         type="submit"

@@ -7,6 +7,13 @@ export const DEFAULT_LIFE_TIMES = {
   dinner: "19:00",
 };
 
+/** 식사 시각의 키와 우리말 이름. 평소 복약 입력에서는 끼니를 거를 수 있다 */
+export const MEALS = [
+  { key: "breakfast", label: "아침" },
+  { key: "lunch", label: "점심" },
+  { key: "dinner", label: "저녁" },
+];
+
 /** "HH:mm" → 하루 0시부터의 분 */
 export function toMinutes(time) {
   const [h, m] = time.split(":").map(Number);

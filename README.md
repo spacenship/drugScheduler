@@ -21,8 +21,6 @@ npm run dev
 
 브라우저에서 http://localhost:3000 을 엽니다.
 
-data : https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
-
 ## 스크립트
 
 | 명령어                            | 설명                      |
@@ -33,6 +31,12 @@ data : https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5v
 | `npm run lint` / `lint:fix`       | ESLint 검사 / 자동 수정   |
 | `npm run format` / `format:check` | Prettier 포맷 적용 / 검사 |
 | `npm run typecheck`               | TypeScript 타입 검사      |
+
+## 데이터
+
+- `gene_data.json`: 유전자·유전형별 추천 약 정보 (화면에서 사용)
+- `data.json`: 약 이름별 기본 정보
+- 원본 스프레드시트: https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
 
 ## 디자인
 

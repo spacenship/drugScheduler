@@ -127,7 +127,7 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
                 required
                 value={times[key]}
                 onChange={(e) => setTimes((prev) => ({ ...prev, [key]: e.target.value }))}
-                className="bg-surface-muted text-number-lg tabular h-14 rounded-md px-4"
+                className="bg-surface-muted text-number-lg tabular h-14 w-full min-w-0 rounded-md px-3 [&::-webkit-calendar-picker-indicator]:hidden"
               />
             </label>
           ))}

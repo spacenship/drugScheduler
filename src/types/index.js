@@ -35,19 +35,23 @@
  */
 
 /**
- * 자료가 없을 때의 결과. suggestions는 정보가 있는 유전자(또는 유전형) 목록
+ * 자료가 없을 때의 결과. query는 입력한 유전자·유전형(유전자는 표에 있으면 표의 글자)
  * @typedef {object} NoDataResult
  * @property {"no_data"} status
  * @property {string} message
  * @property {string} detail
  * @property {NoDataReason} reason
  * @property {{ gene: string, genotype: string }} query
- * @property {string[]} suggestions
  */
 
 /**
- * 유전형으로 약을 찾은 결과: 유전형 권고(gene)와 약 기본 정보(drug)를 약 이름으로 연결한다
- * @typedef {{ status: "found", gene: GeneEntry, drug: DrugInfo } | NoDataResult} LookupResult
+ * 찾은 결과: 유전형 권고(gene)와 약 기본 정보(drug)를 약 이름으로 연결한다
+ * @typedef {{ status: "found", gene: GeneEntry, drug: DrugInfo }} FoundResult
+ */
+
+/**
+ * 유전형으로 약을 찾은 결과
+ * @typedef {FoundResult | NoDataResult} LookupResult
  */
 
 /**

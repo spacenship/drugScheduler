@@ -35,8 +35,8 @@ export function findGeneEntry(gene, genotype) {
   return genotypeKey ? genes[geneKey][genotypeKey] : null;
 }
 
-function noDataResult(reason, query, suggestions = []) {
-  return { status: "no_data", ...noData, reason, query, suggestions };
+function noDataResult(reason, query) {
+  return { status: "no_data", ...noData, reason, query };
 }
 
 /** 약 이름으로 data.json의 약 기본 정보를 찾는다. 없으면 null */
@@ -52,15 +52,11 @@ export function lookupByGenotype(gene, genotype) {
   const query = { gene: gene.trim(), genotype: genotype.trim() };
 
   const geneKey = findKey(genes, gene);
-  if (!geneKey) return noDataResult("unknown_gene", query, listGenes());
+  if (!geneKey) return noDataResult("unknown_gene", query);
 
   const entry = findGeneEntry(gene, genotype);
   if (!entry) {
-    return noDataResult(
-      "unknown_genotype",
-      { ...query, gene: geneKey },
-      Object.keys(genes[geneKey]),
-    );
+    return noDataResult("unknown_genotype", { ...query, gene: geneKey });
   }
 
   const drug = getDrug(entry.drugName);

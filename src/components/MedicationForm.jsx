@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Plus, Trash2 } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { LifeTimeFields } from "@/components/LifeTimeFields";
+import { TIMES_PER_DAY_OPTIONS } from "@/lib/medications";
+import { toMedicationQuery } from "@/lib/query";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 
 /** 입력 중인 약. 복용 횟수와 식사 관계는 고르기 전까지 null */
-
-const TIMES_PER_DAY_OPTIONS = [1, 2, 3, 4];
 
 const MEAL_OPTIONS = [
   { value: "after", label: "식후" },
@@ -27,9 +28,40 @@ function toMedication({ name, timesPerDay, meal }) {
   return { name: trimmed, timesPerDay, meal };
 }
 
-export function MedicationForm({ onSubmit }) {
-  const [drafts, setDrafts] = useState([emptyDraft(0)]);
-  const [times, setTimes] = useState(DEFAULT_LIFE_TIMES);
+/**
+ * @param {object} props
+ * @param {import("@/types").MedicationScheduleInput | null} props.initial 시간표에서 돌아왔거나
+ *   유전자 입력에서 넘어왔을 때 채워 둘 값. 약이 비어 있으면 생활 시간만 채운다
+ */
+export function MedicationForm({ initial }) {
+  const router = useRouter();
+  const [drafts, setDrafts] = useState(
+    initial && initial.medications.length > 0
+      ? initial.medications.map((med, id) => ({ id, ...med }))
+      : [emptyDraft(0)],
+  );
+  const [times, setTimes] = useState(
+    initial
+      ? {
+          wakeTime: initial.wakeTime,
+          sleepTime: initial.sleepTime,
+          breakfast: initial.breakfast,
+          lunch: initial.lunch,
+          dinner: initial.dinner,
+        }
+      : DEFAULT_LIFE_TIMES,
+  );
+
+  // 새 입력(주소에 값이 없을 때)은 화면을 떠날 때 비워서, 처음부터 다시 시작하면 빈 칸으로 열리게 한다.
+  // 유전자 입력 폼과 같은 이유다(Cache Components가 떠난 페이지를 숨겨 두기만 해서 값이 남는다).
+  const isNew = initial === null;
+  useLayoutEffect(() => {
+    if (!isNew) return;
+    return () => {
+      setDrafts([emptyDraft(0)]);
+      setTimes(DEFAULT_LIFE_TIMES);
+    };
+  }, [isNew]);
 
   const canSubmit = drafts.every((draft) => toMedication(draft) !== null);
 
@@ -49,7 +81,7 @@ export function MedicationForm({ onSubmit }) {
     event.preventDefault();
     const medications = drafts.map(toMedication).filter((med) => med !== null);
     if (medications.length !== drafts.length) return;
-    onSubmit({ medications, ...times });
+    router.push(`/usual/schedule?${toMedicationQuery({ medications, ...times })}`);
   }
 
   return (

@@ -32,6 +32,10 @@ npm run dev
 | `npm run format` / `format:check` | Prettier 포맷 적용 / 검사 |
 | `npm run typecheck`               | TypeScript 타입 검사      |
 
+## 디자인
+
+디자인 시스템은 [`docs/design.md`](docs/design.md)를 따릅니다. 토큰은 `src/app/globals.css`의 `@theme`에 정의되어 있습니다.
+
 ## 폴더 구조
 
 ```

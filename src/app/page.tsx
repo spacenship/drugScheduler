@@ -5,7 +5,7 @@ import { InfoNotice } from "@/components/InfoNotice";
 import { ResultView } from "@/components/ResultView";
 import { ScheduleForm } from "@/components/ScheduleForm";
 import { ScheduleView } from "@/components/ScheduleView";
-import { findGeneEntry } from "@/lib/genes";
+import { lookupByGenotype } from "@/lib/genes";
 import type { ScheduleInput } from "@/types";
 
 type Step = "input" | "result" | "schedule";
@@ -13,13 +13,13 @@ type Step = "input" | "result" | "schedule";
 export default function Home() {
   const [step, setStep] = useState<Step>("input");
   const [input, setInput] = useState<ScheduleInput | null>(null);
-  const entry = input ? findGeneEntry(input.gene, input.genotype) : null;
+  const result = input ? lookupByGenotype(input.gene, input.genotype) : null;
+  const entry = result?.status === "found" ? result.gene : null;
 
-  if (input && step === "result") {
+  if (result && step === "result") {
     return (
       <ResultView
-        input={input}
-        entry={entry}
+        result={result}
         onBack={() => setStep("input")}
         onNext={() => setStep("schedule")}
       />

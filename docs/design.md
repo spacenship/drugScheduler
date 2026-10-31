@@ -176,6 +176,11 @@ components:
     textColor: "{colors.on-primary}"
     rounded: "{rounded.md}"
     size: 48px
+  icon-tile-gray:
+    backgroundColor: "{colors.ink-secondary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+    size: 48px
   icon-tile-neutral:
     backgroundColor: "{colors.surface-muted}"
     textColor: "{colors.primary}"
@@ -231,7 +236,7 @@ components:
 
 깨끗하고 밝은 의료 앱. 흰 바탕에 파란 주 버튼 하나, 약마다 연한 색 카드(초록·주황)로 구분하고, 그림자 없이 배경색 차이로 층을 나눈다. 글자 굵기는 400~600만 쓰고, 위계는 굵기보다 크기와 회색 보조 글자로 만든다.
 
-목표 사용자는 72세 김하늘 씨다. 휴대폰을 열고 3초 안에 다음 약과 복용 시간을 알 수 있어야 한다. 화면은 세 장이고 순서대로 넘어간다: 입력 → 결과 카드 → 복약 시간표.
+목표 사용자는 72세 김하늘 씨다. 휴대폰을 열고 3초 안에 다음 약과 복용 시간을 알 수 있어야 한다. 앱은 홈에서 시작해 두 갈래로 나뉜다. 유전자에 따른 복약 시간표는 화면 세 장이 순서대로 넘어간다: 입력 → 결과 카드 → 복약 시간표. 평소 복약 시간표는 한 장이다.
 
 참고한 디자인: Dribbble "Medication Reminder Mobile App"(https://dribbble.com/shots/23235852-Medication-Reminder-Mobile-App). 모양만 참고하고, 접근성과 수업 범위에 맞게 아래처럼 바꿨다.
 
@@ -255,7 +260,7 @@ components:
 - **Border(#E6E7EB)**: 1px 구분선(divider)과, 흰 바탕 위에 흰 카드를 둘 때의 1px 테두리에만 쓴다.
 - **초록 테마(추천 약)**: 카드 바탕 #EAF4DF, 아이콘 타일과 배지 #3F7A16.
 - **주황 테마(가상 약 나음정)**: 카드 바탕 #FDEBE4, 아이콘 타일과 배지 #C2410C.
-- **회색 테마(판단 자료 없음, 시간을 정할 수 없음)**: 카드 바탕 #F4F4F6, 배지 #5F6672.
+- **회색 테마(판단 자료 없음, 시간을 정할 수 없음, 준비 중·아직 약이 없음)**: 카드 바탕 #F4F4F6, 배지와 아이콘 타일 #5F6672.
 - **Warning 빨강(#C62828)**: 주의 문구의 아이콘과 '주의' 글자(warning-label)에만 쓴다. 상자 바탕은 #FDECEC.
 - **Backdrop(#D4E5B9 → #9FD0C6)**: 화면이 430px보다 넓을 때 앱 바깥 배경에 쓰는 연두→청록 그라데이션 `linear-gradient(160deg, #D4E5B9, #9FD0C6)`. page-backdrop-top이 시작 색, page-backdrop-bottom이 끝 색이다. 앱 안에는 그라데이션을 쓰지 않는다.
 
@@ -299,12 +304,34 @@ components:
 - 휴대폰 세로 화면 기준 한 열. 기준 폭 390px, 최대 430px로 가운데 정렬한다.
 - 좌우 여백 20px. 구역 사이 32px, 카드 사이 12px, 카드 안 여백 20px.
 - 한 번에 한 화면만 보인다. 화면마다 주 버튼은 하나이고, 내용 맨 아래에 화면 폭 가득 둔다.
-- 화면 2·3의 맨 위에는 상단 바(뒤로 가기 + 가운데 제목)를 둔다. 화면 1에는 상단 바가 없다.
+- 홈을 뺀 모든 화면의 맨 위에는 상단 바(뒤로 가기 + 가운데 제목)를 둔다. 홈에는 상단 바가 없다. 입력 화면의 뒤로 가기는 홈으로, 시간표 화면의 '처음으로'와 평소 복약 시간표의 '홈으로'도 홈으로 간다.
 - 휴대폰 상태 표시줄(9:41, 배터리)이나 휴대폰 테두리는 그리지 않는다.
+
+### 홈 (참고: Prescriptions 목록 화면의 카드 목록)
+
+```
+[ (i) 교육용 시뮬레이터입니다. 실제 처방이 아닙니다 ]   info-box, 항상 보인다
+복약 스케줄러                                         eyebrow
+어떤 시간표를 볼까요?                                  display
+
+┌ [유전자 맞춤]                         ┐              banner, 초록 테마
+│ 유전자에 따른 복약 시간표                │              title-md
+│ 유전형과 생활 시간을 알려 주면 …          │              body-md, ink-secondary
+│ 시간표 만들기 >                 (DNA) │              파란 글자 + icon-tile-green
+└─────────────────────────────┘
+┌ [준비 중]                            ┐              banner, 회색 테마
+│ 평소 복약 시간표                        │
+│ 평소 먹는 약을 하루 시간표에 모아 …       │
+│ 틀 보기 >                      (시계) │              파란 글자 + icon-tile-gray
+└─────────────────────────────┘
+```
+
+주 버튼은 두지 않는다. 배너 두 장이 곧 시작 버튼이다. 배너는 카드 전체가 하나의 버튼이고, 파란 글자 + 꺾쇠로 누를 수 있음을 알린다.
 
 ### 화면 1 입력 (참고: Prescriptions 목록 화면)
 
 ```
+<  유전자 복약 시간표                                   nav-bar, 뒤로 가기는 홈으로
 [ (i) 교육용 시뮬레이터입니다. 실제 처방이 아닙니다 ]   info-box, 항상 보인다
 복약 시간표 만들기                                    display
 유전형과 생활 시간을 알려 주세요                        body-md, ink-secondary
@@ -374,6 +401,26 @@ components:
 
 복용 카드는 시각 순서로 놓는다. 시간을 정할 수 없는 약은 med-card-empty에 badge-gray "시간을 정할 수 없음"으로 보여 준다. 위 시각은 모양을 보여 주는 예시이고, 실제 값은 시간표 규칙으로 계산한다.
 
+### 평소 복약 시간표 (틀)
+
+```
+<  평소 복약 시간표                                    nav-bar, 뒤로 가기는 홈으로
+평소 먹는 약                                          eyebrow
+하루 복약 시간표                                       display
+
+복용 시각                                            title-md
+┌ --:--                                  ┐            med-card-empty, 시각은 number-xl + ink-secondary
+│ 기상 후                          (해)    │            title-sm + icon-tile-gray
+│ 등록한 약이 없습니다                      │            body-md, ink-secondary
+└────────────────────────────┘
+  … 아침 식사 · 점심 식사 · 저녁 식사 · 취침 전도 같은 모양
+
+[ (i) 약을 등록하는 기능은 준비 중입니다 ]               info-box
+[            홈으로            ]                       button-primary
+```
+
+약을 등록하는 기능을 만들기 전의 빈 틀이다. 약이 등록되면 `--:--`는 복용 시각으로, 회색 카드는 약 테마 카드(초록·주황)로 바뀐다.
+
 ## Elevation & Depth
 
 그림자는 쓰지 않는다. 층은 배경색 차이로만 나눈다: 흰 바탕(#FFFFFF) → 회색 묶음(#F4F4F6) → 약 테마 카드(연한 초록·주황). 흰 바탕 위 흰 카드가 필요할 때만 1px #E6E7EB 테두리를 쓴다. 입력 칸과 칩에 초점이 가면 2px 파란 테두리(outline)를 2px 떨어뜨려 보여 준다.
@@ -394,6 +441,7 @@ components:
 - **input-time**: 회색 바탕, 테두리 없음, 높이 56px, 글자 24px. 위에 label을 둔다. `<input type="time">`을 쓴다.
 - **badge**: 카드나 제목 위에 붙는 작은 이름표. 약 테마의 진한 색 바탕 + 흰 글자.
 - **med-card**: 약 테마 연한 바탕, 모서리 16px, 안 여백 20px. 왼쪽에 시각이나 배지·제목·부제목, 오른쪽 아래에 아이콘 타일.
+- **banner**: 홈에서 화면으로 들어가는 카드. med-card와 같은 모양(연한 테마 바탕, 모서리 16px, 안 여백 20px)이고 위에서부터 배지 → title-md 제목 → body-md 회색 설명 → 맨 아래 한 줄(왼쪽에 button 글자 크기의 파란 안내 글 + 꺾쇠, 오른쪽에 48px 아이콘 타일)로 쌓는다. 카드 전체가 하나의 button이다. 유전자 맞춤은 초록, 아직 준비 중인 것은 회색 테마.
 - **icon-tile**: 48px 정사각형, 모서리 12px, 약 테마의 진한 색 바탕에 흰 선 아이콘. 뜻은 옆 글자로도 함께 전한다. 회색 타일(icon-tile-neutral, 44px)은 파란 선 아이콘을 넣어 라벨 앞에 둔다(참고 이미지의 Code·Issue date 칸).
 - **info-box**: 회색 바탕 안내 상자. 왼쪽에 정보 아이콘. 안내 문구와 '복용 정보' 묶음에 쓴다.
 - **list-row**: 회색 바탕 한 줄. 왼쪽 회색 이름, 오른쪽 검정 값 + 오른쪽 꺾쇠(참고 이미지의 'Where to buy · View map').
@@ -410,7 +458,7 @@ components:
 <!-- 화면을 그린 뒤 lucide.createIcons(); 호출 -->
 ```
 
-쓸 아이콘: pill(알약), sun(기상), moon(취침), utensils(식사), info(안내), triangle-alert(주의), chevron-left(뒤로), chevron-right(목록 줄).
+쓸 아이콘: pill(알약), sun(기상), moon(취침), utensils(식사), info(안내), triangle-alert(주의), chevron-left(뒤로), chevron-right(목록 줄·배너), dna(유전자 배너), clock(평소 복약 배너).
 
 ## Do's and Don'ts
 

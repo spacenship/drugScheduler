@@ -52,19 +52,27 @@ export function UsualScheduleView({
           <h2 className="text-display">하루 복약 시간표</h2>
         </div>
 
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <h2 className="text-title-md">복용하는 약</h2>
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 className="text-title-md">복용하는 약</h2>
+              <span className="text-label text-ink-secondary tabular">
+                {selected.length}개 선택
+              </span>
+            </div>
             <p className="text-body-md text-ink-secondary">먹는 약을 모두 눌러 주세요</p>
           </div>
           {listDrugsByGroup().map(({ group, names }) => (
-            <div key={group.key} className="flex flex-col items-start gap-2">
-              <span
-                className={`${THEME_CLASSES[group.theme].badge} text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5`}
-              >
-                {group.label}
-              </span>
-              <div className="grid w-full grid-cols-2 gap-3">
+            <div key={group.key} className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`${THEME_CLASSES[group.theme].badge} text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5`}
+                >
+                  {group.label}
+                </span>
+                <span className="text-label text-ink-secondary">{names.length}종</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 {names.map((name) => (
                   <Chip key={name} selected={selected.includes(name)} onClick={() => toggle(name)}>
                     {name}
@@ -75,71 +83,58 @@ export function UsualScheduleView({
           ))}
         </section>
 
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-4">
           <h2 className="text-title-md">생활 시간</h2>
           <LifeTimeFields value={times} onChange={onTimesChange} />
         </section>
 
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-4">
           <h2 className="text-title-md">복용 시각</h2>
           {schedule ? (
-            <ul className="flex flex-col gap-3">
+            // 왼쪽 세로선으로 아침부터 밤까지 하루가 이어지는 것을 보여 준다
+            <ol className="flex flex-col">
               {schedule.slots.map(({ key, label, time, doses }) => {
                 const Icon = SLOT_ICONS[key];
 
-                if (doses.length === 0) {
-                  return (
-                    <li
-                      key={key}
-                      className="bg-surface-muted flex items-end justify-between gap-3 rounded-lg p-5"
-                    >
-                      <div className="flex flex-col gap-1">
-                        <span
-                          className="text-number-xl tabular text-ink-secondary"
-                          aria-label="복용 시각 없음"
-                        >
-                          --:--
-                        </span>
-                        <span className="text-title-sm">{label}</span>
-                        <span className="text-body-md text-ink-secondary">
-                          {drugs.length === 0 ? "등록한 약이 없습니다" : "복용하는 약이 없습니다"}
-                        </span>
-                      </div>
-                      <span className="bg-ink-secondary text-on-primary flex size-12 shrink-0 items-center justify-center rounded-md">
-                        <Icon className="size-6" strokeWidth={2} aria-hidden />
-                      </span>
-                    </li>
-                  );
-                }
-
                 return (
-                  <li key={key} className="flex flex-col gap-3">
-                    <div className="flex items-center gap-3">
-                      <span className="bg-surface-muted flex size-11 items-center justify-center rounded-md">
+                  <li key={key} className="group flex gap-3">
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="bg-surface-muted flex size-11 shrink-0 items-center justify-center rounded-md">
                         <Icon className="text-primary size-5" strokeWidth={2} aria-hidden />
                       </span>
-                      <span className="text-title-sm">{label}</span>
-                      <span className="text-label text-ink-secondary tabular">{time}</span>
+                      <span className="bg-border w-px flex-1 group-last:hidden" aria-hidden />
                     </div>
-                    {doses.map(({ drug, dose }) => (
-                      <DoseCard
-                        key={`${drug.drugName}-${dose.minutes}`}
-                        time={dose.time}
-                        drugName={drug.drugName}
-                        note={dose.note}
-                      />
-                    ))}
+                    <div className="flex min-w-0 flex-1 flex-col gap-3 pb-6 group-last:pb-0">
+                      <div className="flex h-11 items-baseline gap-3 self-start pt-2">
+                        <h3 className="text-title-sm">{label}</h3>
+                        <span className="text-label text-ink-secondary tabular">{time}</span>
+                      </div>
+                      {doses.length === 0 ? (
+                        <p className="bg-surface-muted text-body-md text-ink-secondary rounded-lg px-5 py-4">
+                          {drugs.length === 0 ? "등록한 약이 없습니다" : "복용하는 약이 없습니다"}
+                        </p>
+                      ) : (
+                        doses.map(({ drug, dose }) => (
+                          <DoseCard
+                            key={`${drug.drugName}-${dose.minutes}`}
+                            time={dose.time}
+                            drugName={drug.drugName}
+                            note={dose.note}
+                          />
+                        ))
+                      )}
+                    </div>
                   </li>
                 );
               })}
-            </ul>
+            </ol>
           ) : (
             <InfoNotice>생활 시간을 모두 입력하면 복용 시각이 나옵니다</InfoNotice>
           )}
         </section>
 
         {schedule && schedule.unschedulable.length > 0 && (
-          <section className="flex flex-col gap-3">
+          <section className="flex flex-col gap-4">
             <h2 className="text-title-md">시간을 정할 수 없는 약</h2>
             {schedule.unschedulable.map(({ drug, reason }) => (
               <div

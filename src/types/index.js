@@ -1,15 +1,15 @@
 // 자료 구조 설명용 JSDoc 타입 정의. 실행 코드는 없고, 편집기에서 `import("@/types").이름`으로 가져다 쓴다.
 
 /**
- * any = 식사 무관 / after = 식후 / empty = 공복
- * @typedef {"any" | "after" | "empty"} Meal
+ * any = 식사 무관 / before = 식전 / after = 식후 / empty = 공복
+ * @typedef {"any" | "before" | "after" | "empty"} Meal
  */
 
 /**
  * 시간표 계산용 복용 규칙 (data.json / gene_data.json의 schedule)
- * @typedef {{ type: "daily", timesPerDay: number, meal: Meal, minutesAfterMeal?: number }
- *   | { type: "interval", everyHours: number, meal: Meal, minutesAfterMeal?: number }
- *   | { type: "every_n_days", everyDays: number, meal: Meal, minutesAfterMeal?: number }} Schedule
+ * @typedef {{ type: "daily", timesPerDay: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }
+ *   | { type: "interval", everyHours: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }
+ *   | { type: "every_n_days", everyDays: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }} Schedule
  */
 
 /**

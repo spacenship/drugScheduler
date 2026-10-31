@@ -15,6 +15,7 @@ import { DEFAULT_LIFE_TIMES, MEALS } from "@/lib/time";
 /** 입력 중인 약. 복용 횟수와 식사 관계는 고르기 전까지 null. touched는 이름 칸에서 한 번 벗어났는지 */
 
 const MEAL_OPTIONS = [
+  { value: "before", label: "식전" },
   { value: "after", label: "식후" },
   { value: "empty", label: "공복" },
   { value: "any", label: "상관없음" },
@@ -24,27 +25,20 @@ function emptyDraft(id) {
   return { id, name: "", timesPerDay: null, meal: null, touched: false };
 }
 
-/** 모두 채워졌고 약 이름이 약 정보 표에 있을 때만 약 정보로 바꾼다 */
+/** 모두 채워졌고 막아 둔 약이 아닐 때만 약 정보로 바꾼다. 약 이름은 어떤 약이든 받는다 */
 function toMedication({ name, timesPerDay, meal }) {
   const trimmed = name.trim();
-  if (!trimmed || getDrug(trimmed) === null || timesPerDay === null || meal === null) return null;
+  if (!trimmed || isBlockedDrugName(trimmed) || timesPerDay === null || meal === null) return null;
   return { name: trimmed, timesPerDay, meal };
 }
 
-/** 표에 없고, 마약류·오남용 위험으로 막아 둔 이름인지 */
-function isNameBlocked({ name }) {
-  const trimmed = name.trim();
-  return getDrug(trimmed) === null && isBlockedDrugName(trimmed);
-}
-
 /**
- * 표에 없는 이름이면 안내를 보여 준다(막아 둔 약은 따로 안내하므로 제외). 이름 칸에서 벗어난 뒤에는 바로,
- * 입력하는 동안에는 표의 어떤 약 이름의 일부도 아닐 때만 보여 준다(쓰는 중에 깜빡이지 않게)
+ * 약 정보 표에 없는 이름이면 알려 준다. 시간표는 막지 않는다(입력한 횟수와 식사 관계로 계산한다).
+ * 막아 둔 약은 따로 안내하므로 제외하고, 이름 칸에서 벗어난 뒤에만 보여 준다
  */
-function isNameNotFound({ name, touched }) {
+function isNameNotInTable({ name, touched }) {
   const trimmed = name.trim();
-  if (trimmed === "" || getDrug(trimmed) !== null || isNameBlocked({ name })) return false;
-  return touched || !listDrugNames().some((known) => known.includes(trimmed));
+  return touched && trimmed !== "" && !isBlockedDrugName(trimmed) && getDrug(trimmed) === null;
 }
 
 /**
@@ -148,14 +142,14 @@ export function MedicationForm({ initial }) {
                 />
               </label>
 
-              {isNameBlocked(draft) && (
+              {isBlockedDrugName(draft.name) && (
                 <WarningNotice>
                   이 약은 입력할 수 없어요. 마약류나 오남용 위험이 있는 약은 시간표를 만들 수
                   없어요. 처방받은 약이라면 의료진·약사와 상의하세요.
                 </WarningNotice>
               )}
 
-              {isNameNotFound(draft) && (
+              {isNameNotInTable(draft) && (
                 <div
                   role="status"
                   className="bg-surface-muted flex flex-col items-start gap-2 rounded-md p-4"
@@ -164,8 +158,8 @@ export function MedicationForm({ initial }) {
                     찾을 수 없는 정보
                   </span>
                   <p className="text-body-md">
-                    입력한 약을 약 정보 표에서 찾을 수 없어요. 표에 있는 약만 시간표를 만들 수
-                    있으니, 이름을 다시 확인하거나 목록에서 골라 주세요.
+                    약 정보 표에서 찾을 수 없는 약이에요. 입력하신 복용 횟수와 식사 관계대로
+                    시간표를 만들어요.
                   </p>
                 </div>
               )}
@@ -187,7 +181,7 @@ export function MedicationForm({ initial }) {
 
               <fieldset className="min-w-0">
                 <legend className="text-label text-ink-secondary mb-2">식사와의 관계</legend>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {MEAL_OPTIONS.map(({ value, label }) => (
                     <ChoiceChip
                       key={value}

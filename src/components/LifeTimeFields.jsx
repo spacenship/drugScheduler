@@ -40,7 +40,7 @@ export function LifeTimeFields({ times, onChange, skippableMeals = false }) {
                   disabled={skipped}
                   value={times[key] ?? ""}
                   onChange={(e) => onChange(key, e.target.value)}
-                  className="bg-surface-muted text-number-lg tabular disabled:text-ink-secondary h-14 w-full min-w-0 rounded-md px-3 [&::-webkit-calendar-picker-indicator]:hidden"
+                  className="bg-surface-muted text-number-lg tabular disabled:text-ink-secondary h-14 w-full min-w-0 rounded-md px-2.5 tracking-tight [&::-webkit-calendar-picker-indicator]:hidden"
                 />
               </label>
               {skippableMeals && MEAL_KEYS.includes(key) && (

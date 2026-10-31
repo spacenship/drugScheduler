@@ -5,11 +5,12 @@
  */
 export const THEME_CLASSES = {
   green: { card: "bg-green-soft", badge: "bg-green-strong", tile: "bg-green-strong" },
-  orange: { card: "bg-orange-soft", badge: "bg-orange-strong", tile: "bg-orange-strong" },
+  pink: { card: "bg-pink-soft", badge: "bg-pink-strong", tile: "bg-pink-strong" },
   purple: { card: "bg-purple-soft", badge: "bg-purple-strong", tile: "bg-purple-strong" },
-  teal: { card: "bg-teal-soft", badge: "bg-teal-strong", tile: "bg-teal-strong" },
+  orange: { card: "bg-orange-soft", badge: "bg-orange-strong", tile: "bg-orange-strong" },
+  sky: { card: "bg-sky-soft", badge: "bg-sky-strong", tile: "bg-sky-strong" },
   gray: { card: "bg-surface-muted", badge: "bg-ink-secondary", tile: "bg-ink-secondary" },
 };
 
-/** 계열을 알 수 없는 약(직접 입력한 약)이 쓰는 기본 테마 */
-export const DEFAULT_THEME = "green";
+/** 계열을 알 수 없는 약(직접 입력한 약)이 쓰는 기본 테마. 초록은 유전자 맞춤에만 쓴다 */
+export const DEFAULT_THEME = "gray";

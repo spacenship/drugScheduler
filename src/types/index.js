@@ -113,7 +113,7 @@
 
 /**
  * 카드·배지·아이콘 타일의 색 테마
- * @typedef {"green" | "orange" | "purple" | "teal" | "gray"} Theme
+ * @typedef {"green" | "pink" | "purple" | "orange" | "sky" | "gray"} Theme
  */
 
 /**

@@ -15,10 +15,12 @@ colors:
   green-strong: "#3F7A16"
   orange-soft: "#FDEBE4"
   orange-strong: "#C2410C"
+  pink-soft: "#FCE7F1"
+  pink-strong: "#BE185D"
   purple-soft: "#F1EAFB"
   purple-strong: "#6B3FA0"
-  teal-soft: "#E0F2F1"
-  teal-strong: "#0F766E"
+  sky-soft: "#E1F1FB"
+  sky-strong: "#0369A1"
   warning: "#C62828"
   warning-soft: "#FDECEC"
   backdrop-top: "#D4E5B9"
@@ -133,7 +135,7 @@ components:
     typography: "{typography.number-lg}"
     rounded: "{rounded.md}"
     height: 56px
-    padding: 0 16px
+    padding: 0 10px
   badge-green:
     backgroundColor: "{colors.green-strong}"
     textColor: "{colors.on-primary}"
@@ -155,8 +157,15 @@ components:
     rounded: "{rounded.sm}"
     height: 28px
     padding: 0 10px
-  badge-teal:
-    backgroundColor: "{colors.teal-strong}"
+  badge-pink:
+    backgroundColor: "{colors.pink-strong}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.badge}"
+    rounded: "{rounded.sm}"
+    height: 28px
+    padding: 0 10px
+  badge-sky:
+    backgroundColor: "{colors.sky-strong}"
     textColor: "{colors.on-primary}"
     typography: "{typography.badge}"
     rounded: "{rounded.sm}"
@@ -184,8 +193,13 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.lg}"
     padding: 20px
-  med-card-teal:
-    backgroundColor: "{colors.teal-soft}"
+  med-card-pink:
+    backgroundColor: "{colors.pink-soft}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: 20px
+  med-card-sky:
+    backgroundColor: "{colors.sky-soft}"
     textColor: "{colors.ink}"
     rounded: "{rounded.lg}"
     padding: 20px
@@ -209,8 +223,13 @@ components:
     textColor: "{colors.on-primary}"
     rounded: "{rounded.md}"
     size: 48px
-  icon-tile-teal:
-    backgroundColor: "{colors.teal-strong}"
+  icon-tile-pink:
+    backgroundColor: "{colors.pink-strong}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+    size: 48px
+  icon-tile-sky:
+    backgroundColor: "{colors.sky-strong}"
     textColor: "{colors.on-primary}"
     rounded: "{rounded.md}"
     size: 48px
@@ -272,7 +291,7 @@ components:
 
 ## Overview
 
-깨끗하고 밝은 의료 앱. 흰 바탕에 파란 주 버튼 하나, 약 계열마다 연한 색 카드(초록·주황·보라·청록)로 구분하고, 그림자 없이 배경색 차이로 층을 나눈다. 글자 굵기는 400~600만 쓰고, 위계는 굵기보다 크기와 회색 보조 글자로 만든다.
+깨끗하고 밝은 의료 앱. 흰 바탕에 파란 주 버튼 하나, 약 계열마다 연한 색 카드(핑크·보라·주황·하늘색)로 구분하고, 그림자 없이 배경색 차이로 층을 나눈다. 글자 굵기는 400~600만 쓰고, 위계는 굵기보다 크기와 회색 보조 글자로 만든다.
 
 목표 사용자는 72세 김하늘 씨다. 휴대폰을 열고 3초 안에 다음 약과 복용 시간을 알 수 있어야 한다. 앱은 홈에서 시작해 두 갈래로 나뉜다. 유전자에 따른 복약 시간표는 화면 세 장이 순서대로 넘어간다: 입력 → 결과 카드 → 복약 시간표. 평소 복약 시간표는 화면 두 장이다: 입력 → 복약 시간표. 입력한 유전자·유전형이 표에 없으면 결과 카드 대신 평소 복약 시간표 입력으로 넘어간다. 화면마다 주소가 따로 있다(아래 '화면과 주소').
 
@@ -282,7 +301,7 @@ components:
 | --------------------------------------------------- | -------------------------------------------------- |
 | 파란 주 버튼 + 그 아래 글자 버튼 하나               | 그대로 쓴다                                        |
 | 약 종류마다 색 카드(주황 = 물약, 초록 = 캡슐)       | 약 계열마다 색(아래 Colors), 판단 자료 없음 = 회색 |
-| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 초록·주황·보라·청록으로 바꿨다    |
+| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 핑크·보라·주황·하늘색으로 바꿨다  |
 | 연한 회색 보조 글자                                 | 더 진한 회색(#5F6672)으로 바꿨다                   |
 | 본문 약 16px                                        | 18px로 키웠다                                      |
 | SF Pro 계열 영문 글꼴                               | 한글이 비슷한 느낌인 Pretendard                    |
@@ -297,11 +316,12 @@ components:
 - **Surface-muted(#F4F4F6)**: 입력 칸, 칩, 정보 상자, 목록 줄의 바탕. 흰 바탕 위에서 묶음을 나누는 회색이다.
 - **Border(#E6E7EB)**: 1px 구분선(divider)과, 흰 바탕 위에 흰 카드를 둘 때의 1px 테두리에만 쓴다.
 - **약 계열 테마**: 비슷한 약끼리 한 계열로 묶고, 계열마다 색 하나를 쓴다. 계열은 약학적 분류(치료 목적)를 따르며 시트에는 없는 정보라 `src/lib/drugGroups.js`에서 정한다.
-  - **초록 테마(진통제: 코데인)**: 카드 바탕 #EAF4DF, 아이콘 타일과 배지 #3F7A16.
-  - **주황 테마(항암제: 카페시타빈, 이리노테칸 주사제)**: 카드 바탕 #FDEBE4, 아이콘 타일과 배지 #C2410C.
-  - **보라 테마(면역억제제: 아자티오프린, 타크로리무스 캡슐)**: 카드 바탕 #F1EAFB, 아이콘 타일과 배지 #6B3FA0.
-  - **청록 테마(항감염제: 에파비렌즈, 이소니아지드)**: 카드 바탕 #E0F2F1, 아이콘 타일과 배지 #0F766E.
-  - 계열이 정해지지 않은 약(평소 복약에서 직접 입력한 약 포함)은 계열 이름 없이 초록 카드로 보인다. 새 계열을 만들 때는 흰 글자가 진한 색 위에서 4.5:1 이상 읽히는지 확인한다(위 네 색은 5.2~7.4:1).
+  - **핑크 테마(진통제: 코데인)**: 카드 바탕 #FCE7F1, 아이콘 타일과 배지 #BE185D.
+  - **보라 테마(항암제: 카페시타빈, 이리노테칸 주사제)**: 카드 바탕 #F1EAFB, 아이콘 타일과 배지 #6B3FA0.
+  - **주황 테마(면역억제제: 아자티오프린, 타크로리무스 캡슐)**: 카드 바탕 #FDEBE4, 아이콘 타일과 배지 #C2410C.
+  - **하늘색 테마(항감염제: 에파비렌즈, 이소니아지드)**: 카드 바탕 #E1F1FB, 아이콘 타일과 배지 #0369A1. 파란 Primary와 헷갈리지 않도록 누를 수 없는 카드·배지·아이콘 타일에만 쓴다.
+  - 계열이 정해지지 않은 약(평소 복약에서 직접 입력한 약 포함)은 계열 이름 없이 회색 카드로 보인다. 새 계열을 만들 때는 흰 글자가 진한 색 위에서 4.5:1 이상 읽히는지 확인한다(위 네 색은 5.2~7.4:1).
+- **초록 테마(유전자 맞춤 배너)**: 카드 바탕 #EAF4DF, 아이콘 타일과 배지 #3F7A16. 약 계열에는 쓰지 않는다.
 - **회색 테마(판단 자료 없음, 시간을 정할 수 없음, 약이 없는 칸, 약 하나에 묶이지 않는 평소 복약 배너)**: 카드 바탕 #F4F4F6, 배지와 아이콘 타일 #5F6672.
 - **Warning 빨강(#C62828)**: 주의 문구의 아이콘과 '주의' 글자(warning-label)에만 쓴다. 상자 바탕은 #FDECEC.
 - **Backdrop(#D4E5B9 → #9FD0C6)**: 화면이 430px보다 넓을 때 앱 바깥 배경에 쓰는 연두→청록 그라데이션 `linear-gradient(160deg, #D4E5B9, #9FD0C6)`. page-backdrop-top이 시작 색, page-backdrop-bottom이 끝 색이다. 앱 안에는 그라데이션을 쓰지 않는다.
@@ -370,23 +390,26 @@ components:
 ### 홈 (참고: Prescriptions 목록 화면의 카드 목록)
 
 ```
-[ (i) 교육용 시뮬레이터입니다. 실제 처방이 아닙니다 ]   info-box, 항상 보인다
-복약 스케줄러                                         eyebrow
+(알약) 복약 스케줄러                                    icon-tile-neutral + eyebrow
 어떤 시간표를 볼까요?                                  display
 
-┌ [유전자 맞춤]                         ┐              banner, 초록 테마
+┌ [유전자 맞춤]                  (DNA) ┐              banner, 초록 테마, 배지와 icon-tile-green
 │ 유전자에 따른 복약 시간표                │              title-md
-│ 유전형과 생활 시간을 알려 주면 …          │              body-md, ink-secondary
-│ 시간표 만들기 >                 (DNA) │              파란 글자 + icon-tile-green
+│ 내 유전형에 맞는 약과 복용 시각           │              body-md, ink-secondary
+│ CYP2D6 · DPYD · UGT1A1 외 4종          │              label, ink-secondary (들어 있는 자료)
+│ 시간표 만들기                      [>]  │              파란 글자 + 흰 꺾쇠 칸(44px)
 └─────────────────────────────┘
-┌ [평소 복약]                           ┐              banner, 회색 테마
+┌ [평소 복약]                    (시계) ┐              banner, 회색 테마, 배지와 icon-tile-gray
 │ 평소 복약 시간표                        │
-│ 평소 먹는 약과 생활 시간을 알려 주면 …     │
-│ 시간표 보기 >                  (시계) │              파란 글자 + icon-tile-gray
+│ 평소 먹는 약을 하루에 모아 보기          │
+│ 약 이름 · 횟수 · 식사 관계를 직접 입력     │              label, ink-secondary (입력 방식)
+│ 시간표 만들기                      [>]  │
 └─────────────────────────────┘
+
+[ (i) 교육용 시뮬레이터입니다. 실제 처방이 아닙니다 ]   info-box, 맨 아래에 붙여 항상 보인다
 ```
 
-주 버튼은 두지 않는다. 배너 두 장이 곧 시작 버튼이다. 배너는 카드 전체가 하나의 버튼이고, 파란 글자 + 꺾쇠로 누를 수 있음을 알린다.
+주 버튼은 두지 않는다. 배너 두 장이 곧 시작 버튼이다. 배너는 카드 전체가 하나의 버튼이고, 파란 글자 + 꺾쇠로 누를 수 있음을 알린다. 휴대폰 한 화면(높이 844px)에 안내 상자까지 들어가야 하므로, 배너 설명은 한 줄로 쓴다. 배너 안 '약 7종'·'외 4종'은 자료(`data/`)에서 세어 보여 준다.
 
 ### 화면 1 입력 (참고: Prescriptions 목록 화면)
 
@@ -551,7 +574,7 @@ DPYD *1/*2A · 카페시타빈                               eyebrow
 
 ## Elevation & Depth
 
-그림자는 쓰지 않는다. 층은 배경색 차이로만 나눈다: 흰 바탕(#FFFFFF) → 회색 묶음(#F4F4F6) → 약 테마 카드(연한 초록·주황·보라·청록). 흰 바탕 위 흰 카드가 필요할 때만 1px #E6E7EB 테두리를 쓴다. 입력 칸과 칩에 초점이 가면 2px 파란 테두리(outline)를 2px 떨어뜨려 보여 준다.
+그림자는 쓰지 않는다. 층은 배경색 차이로만 나눈다: 흰 바탕(#FFFFFF) → 회색 묶음(#F4F4F6) → 약 테마 카드(연한 핑크·보라·주황·하늘색). 흰 바탕 위 흰 카드가 필요할 때만 1px #E6E7EB 테두리를 쓴다. 입력 칸과 칩에 초점이 가면 2px 파란 테두리(outline)를 2px 떨어뜨려 보여 준다.
 
 ## Shapes
 
@@ -566,10 +589,10 @@ DPYD *1/*2A · 카페시타빈                               eyebrow
 - **button-primary**: 파란 바탕, 흰 글자 18px/600, 높이 56px, 화면 폭 가득. 화면마다 하나.
 - **button-text**: 파란 글자만 있는 보조 버튼. 필요하면 주 버튼 바로 아래에 하나만 둔다.
 - **choice-chip**: 회색 바탕 칩. 고르면 파란 바탕 + 흰 글자로 바뀐다(참고 이미지의 'Online stores' 선택 상태). 평소 복약 입력의 하루 복용 횟수·식사와의 관계 칩은 한 번에 하나만 고른다. 높이는 56px 이상이며 글자가 길면 두 줄로 늘어난다.
-- **input-time**: 회색 바탕, 테두리 없음, 높이 56px, 글자 24px. 위에 label을 둔다. `<input type="time">`을 쓴다.
+- **input-time**: 회색 바탕, 테두리 없음, 높이 56px, 글자 24px. 위에 label을 둔다. `<input type="time">`을 쓴다. 2열(칸 폭 약 169px)에서 데스크톱 크롬이 "07:00 AM"의 오전/오후 글자를 자르지 않도록 좌우 여백은 10px, 글자 간격은 살짝 좁힌다(tracking-tight).
 - **badge**: 카드나 제목 위에 붙는 작은 이름표. 약 테마의 진한 색 바탕 + 흰 글자.
 - **med-card**: 약 테마 연한 바탕, 모서리 16px, 안 여백 20px. 왼쪽에 시각이나 배지·제목·부제목, 오른쪽 아래에 아이콘 타일.
-- **banner**: 홈에서 화면으로 들어가는 카드. med-card와 같은 모양(연한 테마 바탕, 모서리 16px, 안 여백 20px)이고 위에서부터 배지 → title-md 제목 → body-md 회색 설명 → 맨 아래 한 줄(왼쪽에 button 글자 크기의 파란 안내 글 + 꺾쇠, 오른쪽에 48px 아이콘 타일)로 쌓는다. 카드 전체가 하나의 button이다. 유전자 맞춤은 초록, 평소 복약은 약 하나에 묶이지 않는 화면이라 회색 테마.
+- **banner**: 홈에서 화면으로 들어가는 카드. med-card와 같은 모양(연한 테마 바탕, 모서리 16px, 안 여백 20px)이고 위에서부터 한 줄(왼쪽에 배지, 오른쪽에 48px 아이콘 타일) → title-md 제목 → body-md 회색 설명 → label 회색 보조 줄(들어 있는 자료) → 맨 아래 한 줄(왼쪽에 button 글자 크기의 파란 안내 글, 오른쪽에 흰 바탕 44px 칸 안의 파란 꺾쇠)로 쌓는다. 카드 전체가 하나의 button이다. 유전자 맞춤은 초록, 평소 복약은 약 하나에 묶이지 않는 화면이라 회색 테마.
 - **icon-tile**: 48px 정사각형, 모서리 12px, 약 테마의 진한 색 바탕에 흰 선 아이콘. 뜻은 옆 글자로도 함께 전한다. 회색 타일(icon-tile-neutral, 44px)은 파란 선 아이콘을 넣어 라벨 앞에 둔다(참고 이미지의 Code·Issue date 칸).
 - **info-box**: 회색 바탕 안내 상자. 왼쪽에 정보 아이콘. 안내 문구와 '복용 정보' 묶음에 쓴다.
 - **list-row**: 회색 바탕 한 줄. 왼쪽 회색 이름, 오른쪽 검정 값 + 오른쪽 꺾쇠(참고 이미지의 'Where to buy · View map').
@@ -591,11 +614,11 @@ DPYD *1/*2A · 카페시타빈                               eyebrow
 ## Do's and Don'ts
 
 - Do: 화면마다 파란 주 버튼은 하나만 둔다.
-- Do: 비슷한 약은 한 계열로 묶어 색 테마 하나를 정하고 모든 화면에서 같은 색을 쓴다(진통제 초록, 항암제 주황, 면역억제제 보라, 항감염제 청록). 색과 함께 계열 이름도 글자로 적는다.
+- Do: 비슷한 약은 한 계열로 묶어 색 테마 하나를 정하고 모든 화면에서 같은 색을 쓴다(진통제 핑크, 항암제 보라, 면역억제제 주황, 항감염제 하늘색). 색과 함께 계열 이름도 글자로 적는다.
 - Do: 주의 문구는 빨간 아이콘 + '주의' 글자 + 문장을 함께 쓴다. 색만으로 주의를 알리지 않는다.
 - Do: 판단 자료가 없거나 시간을 정할 수 없을 때는 회색 카드와 회색 배지로 보여 준다.
 - Do: 누를 수 있는 것은 높이 44px 이상으로 만든다.
-- Don't: 참고 이미지의 연한 초록·주황 배지·타일 위 흰 글자를 그대로 쓰지 않는다(거의 안 보인다). 진한 초록·주황·보라·청록을 쓴다.
+- Don't: 참고 이미지의 연한 초록·주황 배지·타일 위 흰 글자를 그대로 쓰지 않는다(거의 안 보인다). 진한 핑크·보라·주황·하늘색을 쓴다.
 - Don't: #9A9A9F처럼 연한 회색 글자를 쓰지 않는다. 보조 글자는 #5F6672.
 - Don't: 하단 탭 바, 지도, 약국 목록, 구매 버튼, 프로필 사진, 의사 사진은 만들지 않는다. 참고 이미지에만 있는 기능이다.
 - Don't: 휴대폰 상태 표시줄과 휴대폰 테두리를 그리지 않는다.

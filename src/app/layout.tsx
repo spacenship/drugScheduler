@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | 복약 스케줄러",
   },
   description:
-    "유전형과 생활 시간을 넣으면 결과 카드와 하루 복약 시간표를 보여 주는 교육용 시뮬레이터입니다. 실제 처방 도구가 아닙니다.",
+    "유전자와 유전형에 맞는 추천 약과 약 정보를 보여 주는 교육용 시뮬레이터입니다. 실제 처방 도구가 아닙니다.",
 };
 
 export const viewport: Viewport = {

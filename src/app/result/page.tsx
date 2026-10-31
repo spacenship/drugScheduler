@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { ResultDetails } from "@/components/ResultDetails";
@@ -33,12 +32,6 @@ export default function ResultPage({ searchParams }: { searchParams: SearchParam
 
         <div className="mt-auto flex flex-col gap-4">
           <InfoNotice>실제 복용은 의료진과 상의하세요</InfoNotice>
-          <Link
-            href="/"
-            className="bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md"
-          >
-            복약 시간표 만들기
-          </Link>
         </div>
       </main>
     </>

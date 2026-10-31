@@ -1,6 +1,8 @@
 import { Pill, TriangleAlert } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
+import { groupOf } from "@/lib/drugGroups";
+import { THEME_CLASSES } from "@/lib/theme";
 import type { GeneEntry, ScheduleInput } from "@/types";
 
 interface ResultViewProps {
@@ -20,6 +22,8 @@ function InfoRow({ name, value }: { name: string; value: string }) {
 }
 
 export function ResultView({ input, entry, onBack, onNext }: ResultViewProps) {
+  const color = THEME_CLASSES[entry ? groupOf(entry.drugName).theme : "gray"];
+
   return (
     <>
       <NavBar title="결과" onBack={onBack} />
@@ -27,7 +31,9 @@ export function ResultView({ input, entry, onBack, onNext }: ResultViewProps) {
         {entry ? (
           <>
             <div className="flex flex-col items-start gap-2">
-              <span className="bg-green-strong text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5">
+              <span
+                className={`${color.badge} text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5`}
+              >
                 {input.gene} {input.genotype}
               </span>
               <h2 className="text-display">{entry.drugName}</h2>
@@ -39,10 +45,12 @@ export function ResultView({ input, entry, onBack, onNext }: ResultViewProps) {
               <h2 className="text-title-md">복용 정보</h2>
               <div className="bg-surface-muted flex flex-col gap-4 rounded-md p-4">
                 <div className="flex items-center gap-3">
-                  <span className="bg-green-strong text-on-primary flex size-12 items-center justify-center rounded-md">
+                  <span
+                    className={`${color.tile} text-on-primary flex size-12 items-center justify-center rounded-md`}
+                  >
                     <Pill className="size-6" strokeWidth={2} aria-hidden />
                   </span>
-                  <span className="text-title-sm">추천 약</span>
+                  <span className="text-title-sm">추천 약 · {groupOf(entry.drugName).label}</span>
                 </div>
                 <InfoRow name="복용 간격" value={entry.dosingInterval} />
                 <div className="bg-border h-px" />

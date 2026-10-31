@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Moon, Sun, Utensils } from "lucide-react";
 import { Chip } from "@/components/Chip";
+import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
-import type { ScheduleInput } from "@/types";
+import type { LifeTimes, ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {
   /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
@@ -13,20 +13,10 @@ interface ScheduleFormProps {
   onSubmit: (input: ScheduleInput) => void;
 }
 
-const TIME_FIELDS = [
-  { key: "wakeTime", label: "기상", icon: Sun },
-  { key: "sleepTime", label: "취침", icon: Moon },
-  { key: "breakfast", label: "아침 식사", icon: Utensils },
-  { key: "lunch", label: "점심 식사", icon: Utensils },
-  { key: "dinner", label: "저녁 식사", icon: Utensils },
-] as const;
-
-type TimeKey = (typeof TIME_FIELDS)[number]["key"];
-
 export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
-  const [times, setTimes] = useState<Record<TimeKey, string>>(
+  const [times, setTimes] = useState<LifeTimes>(
     initial
       ? {
           wakeTime: initial.wakeTime,
@@ -82,25 +72,7 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-title-md">생활 시간</h2>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-5">
-          {TIME_FIELDS.map(({ key, label, icon: Icon }) => (
-            <label key={key} className="flex flex-col gap-2">
-              <span className="text-label text-ink-secondary flex items-center gap-2">
-                <span className="bg-surface-muted flex size-11 items-center justify-center rounded-md">
-                  <Icon className="text-primary size-5" strokeWidth={2} aria-hidden />
-                </span>
-                {label}
-              </span>
-              <input
-                type="time"
-                required
-                value={times[key]}
-                onChange={(e) => setTimes((prev) => ({ ...prev, [key]: e.target.value }))}
-                className="bg-surface-muted text-number-lg tabular h-14 rounded-md px-4"
-              />
-            </label>
-          ))}
-        </div>
+        <LifeTimeFields value={times} onChange={setTimes} />
       </section>
 
       <button

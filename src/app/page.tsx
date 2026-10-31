@@ -9,7 +9,8 @@ import { ScheduleForm } from "@/components/ScheduleForm";
 import { ScheduleView } from "@/components/ScheduleView";
 import { UsualScheduleView } from "@/components/UsualScheduleView";
 import { findGeneEntry } from "@/lib/genes";
-import type { ScheduleInput } from "@/types";
+import { DEFAULT_LIFE_TIMES } from "@/lib/time";
+import type { LifeTimes, ScheduleInput } from "@/types";
 
 /** home → (input → result → schedule) 유전자 맞춤 흐름 / home → usual 평소 복약 */
 type Step = "home" | "usual" | "input" | "result" | "schedule";
@@ -18,6 +19,7 @@ export default function Home() {
   const [step, setStep] = useState<Step>("home");
   const [input, setInput] = useState<ScheduleInput | null>(null);
   const [usualDrugs, setUsualDrugs] = useState<string[]>([]);
+  const [usualTimes, setUsualTimes] = useState<LifeTimes>(DEFAULT_LIFE_TIMES);
   const entry = input ? findGeneEntry(input.gene, input.genotype) : null;
 
   if (step === "home") {
@@ -29,6 +31,8 @@ export default function Home() {
       <UsualScheduleView
         selected={usualDrugs}
         onChange={setUsualDrugs}
+        times={usualTimes}
+        onTimesChange={setUsualTimes}
         onBack={() => setStep("home")}
       />
     );

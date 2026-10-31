@@ -1,5 +1,6 @@
 import { ChevronRight, Clock, Dna } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
+import { THEME_CLASSES, type Theme } from "@/lib/theme";
 
 interface HomeViewProps {
   onOpenGene: () => void;
@@ -7,7 +8,7 @@ interface HomeViewProps {
 }
 
 interface BannerProps {
-  theme: "green" | "gray";
+  theme: Theme;
   badge: string;
   title: string;
   description: string;
@@ -16,14 +17,9 @@ interface BannerProps {
   onClick: () => void;
 }
 
-const THEME = {
-  green: { card: "bg-green-soft", badge: "bg-green-strong", tile: "bg-green-strong" },
-  gray: { card: "bg-surface-muted", badge: "bg-ink-secondary", tile: "bg-ink-secondary" },
-} as const;
-
 /** 홈의 배너. 카드 전체가 하나의 버튼이라 안쪽에는 span만 쓴다 */
 function Banner({ theme, badge, title, description, action, icon, onClick }: BannerProps) {
-  const color = THEME[theme];
+  const color = THEME_CLASSES[theme];
 
   return (
     <button

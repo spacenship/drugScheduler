@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "title": "약물 복약 정보",
+    "notice": "교육용 시뮬레이터 데이터입니다. 실제 처방에 쓰지 않습니다.",
+    "version": "1.0",
+    "updated": "2026-10-31",
+    "howToLookup": "drugs[약 명칭]으로 약 정보를 찾는다. 예: drugs[\"코데인\"]. 찾지 못하면 noData를 보여 준다. gene_data.json의 drugName과 같은 이름을 쓴다.",
+    "scheduleGuide": {
+      "type": "daily = 하루 timesPerDay번 / interval = everyHours시간마다 / every_n_days = everyDays일마다",
+      "meal": "any = 식사 무관 / after = 식후(minutesAfterMeal분 뒤) / empty = 공복",
+      "note": "schedule은 원문(mealRelation, dosingInterval)을 시간표 계산용으로 옮긴 값이다. 화면에는 원문을 보여 준다."
+    }
+  },
+  "fields": {
+    "drugName": "약 명칭",
+    "ingredient": "약의 성분",
+    "mealRelation": "식사 관계여부",
+    "dosingInterval": "복용 간격",
+    "sideEffects": "부작용",
+    "source": "출처/근거"
+  },
+  "noData": {
+    "status": "no_data",
+    "message": "판단 자료 없음",
+    "detail": "입력한 약 이름에 맞는 정보가 표에 없습니다. 실제 복용은 의료진과 상의하세요."
+  },
+  "drugs": {
+    "코데인": {
+      "drugName": "코데인",
+      "ingredient": "코데인인산염",
+      "mealRelation": "식사 무관",
+      "dosingInterval": "4시간 간격",
+      "sideEffects": "모르핀의 빠른 생성, 독성 위험 증가",
+      "source": "미국 NCBI, 「Codeine Therapy and CYP2D6 Genotype』 및 CPIC 지침",
+      "schedule": {
+        "type": "interval",
+        "everyHours": 4,
+        "meal": "any"
+      }
+    },
+    "카페시타빈": {
+      "drugName": "카페시타빈",
+      "ingredient": "카페시타빈",
+      "mealRelation": "식후 30분",
+      "dosingInterval": "1일 2회",
+      "sideEffects": "약물 분해 능력 감소, 치명적인 약물 독성 위험 증가",
+      "source": "미국 NCBI, 「Capecitabine Therapy and DPYD Genotype』.",
+      "schedule": {
+        "type": "daily",
+        "timesPerDay": 2,
+        "meal": "after",
+        "minutesAfterMeal": 30
+      }
+    },
+    "이리노테칸 주사제": {
+      "drugName": "이리노테칸 주사제",
+      "ingredient": "이리노테칸염산염",
+      "mealRelation": "식사 무관",
+      "dosingInterval": "3주마다 1회씩 투여",
+      "sideEffects": "심한 호중구감소증, 설사 위험 증가",
+      "source": "ClinPGx의 DPWG 지침 요약 및 UGT1A1 유전자 검사 해설 논문.",
+      "schedule": {
+        "type": "every_n_days",
+        "everyDays": 21,
+        "meal": "any"
+      }
+    },
+    "아자티오프린": {
+      "drugName": "아자티오프린",
+      "ingredient": "아자티오프린",
+      "mealRelation": "식사 무관",
+      "dosingInterval": "보통 1일 1회(처방에 따라 조절)",
+      "sideEffects": "백혈구 감소, 감염 위험 증가, 골수 기능 저하",
+      "source": "CPIC 공식 가이드라인",
+      "schedule": {
+        "type": "daily",
+        "timesPerDay": 1,
+        "meal": "any"
+      }
+    },
+    "에파비렌즈": {
+      "drugName": "에파비렌즈",
+      "ingredient": "에파비렌즈",
+      "mealRelation": "공복",
+      "dosingInterval": "1일 1회",
+      "sideEffects": "어지러움, 수면 장애, 집중력 저하",
+      "source": "CPIC 공식 가이드라인",
+      "schedule": {
+        "type": "daily",
+        "timesPerDay": 1,
+        "meal": "empty"
+      }
+    },
+    "타크로리무스 캡슐": {
+      "drugName": "타크로리무스 캡슐",
+      "ingredient": "타크로리무스",
+      "mealRelation": "식사 무관",
+      "dosingInterval": "1일 2회",
+      "sideEffects": "신독성, 손떨림, 고혈압, 고혈당, 감염 위험 증가",
+      "source": "CPIC 「CYP3A5 유전형과 타크로리무스 투여 지침』, DailyMed 타크로리무스 캡슐 허가사항",
+      "schedule": {
+        "type": "daily",
+        "timesPerDay": 2,
+        "meal": "any"
+      }
+    },
+    "이소니아지드": {
+      "drugName": "이소니아지드",
+      "ingredient": "이소니아지드",
+      "mealRelation": "공복",
+      "dosingInterval": "1일 1회",
+      "sideEffects": "약물이 몸에 오래 남아 간 손상이나 말초 신경병증 등의 부작용 위험이 높아질 수 있음",
+      "source": "Laboratory Medicine – 약물유전체학 관련 연구, NAT2 유전자형에 따른 이소니아지드 연구, 약학정보원 – 이소니아지드 복약안내",
+      "schedule": {
+        "type": "daily",
+        "timesPerDay": 1,
+        "meal": "empty"
+      }
+    }
+  }
+}

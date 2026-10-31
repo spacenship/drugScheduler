@@ -21,6 +21,8 @@ npm run dev
 
 브라우저에서 http://localhost:3000 을 엽니다.
 
+data : https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
+
 ## 스크립트
 
 | 명령어                            | 설명                      |

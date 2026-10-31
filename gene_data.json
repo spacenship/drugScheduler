@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "title": "유전자 맞춤 복약 정보 관리표",
+    "notice": "교육용 시뮬레이터 데이터입니다. 실제 처방에 쓰지 않습니다.",
+    "version": "1.0",
+    "updated": "2026-10-31",
+    "howToLookup": "genes[유전자명][유전형]으로 약 정보를 찾는다. 예: genes[\"CYP2D6\"][\"*1/*1x2\"]. 유전자명과 유전형 글자가 표와 똑같아야 하고, 찾지 못하면 noData를 보여 준다.",
+    "scheduleGuide": {
+      "type": "daily = 하루 timesPerDay번 / interval = everyHours시간마다 / every_n_days = everyDays일마다",
+      "meal": "any = 식사 무관 / after = 식후(minutesAfterMeal분 뒤) / empty = 공복",
+      "note": "schedule은 원문(mealRelation, dosingInterval)을 시간표 계산용으로 옮긴 값이다. 화면에는 원문을 보여 준다."
+    }
+  },
+  "fields": {
+    "gene": "유전자명",
+    "genotype": "유전형",
+    "drugName": "약 명칭",
+    "ingredient": "약의 성분",
+    "mealRelation": "식사 관계여부",
+    "dosingInterval": "복용 간격",
+    "sideEffects": "부작용",
+    "details": "이외 세부정보",
+    "source": "출처/근거"
+  },
+  "noData": {
+    "status": "no_data",
+    "message": "판단 자료 없음",
+    "detail": "입력한 유전자명과 유전형에 맞는 약 정보가 표에 없습니다. 실제 복용은 의료진과 상의하세요."
+  },
+  "genes": {
+    "CYP2D6": {
+      "*1/*1x2": {
+        "gene": "CYP2D6",
+        "genotype": "*1/*1x2",
+        "drugName": "코데인",
+        "ingredient": "코데인인산염",
+        "mealRelation": "식사 무관",
+        "dosingInterval": "4시간 간격",
+        "sideEffects": "모르핀의 빠른 생성, 독성 위험 증가",
+        "details": "초고속 대사형은 코데인 사용을 피하고, CYP2D6의 영향을 덜 받는 다른 진통제 고려",
+        "source": "미국 NCBI, 「Codeine Therapy and CYP2D6 Genotype』 및 CPIC 지침",
+        "schedule": {
+          "type": "interval",
+          "everyHours": 4,
+          "meal": "any"
+        }
+      }
+    },
+    "DPYD": {
+      "*1/*2A": {
+        "gene": "DPYD",
+        "genotype": "*1/*2A",
+        "drugName": "카페시타빈",
+        "ingredient": "카페시타빈",
+        "mealRelation": "식후 30분",
+        "dosingInterval": "1일 2회",
+        "sideEffects": "약물 분해 능력 감소, 치명적인 약물 독성 위험 증가",
+        "details": "표준 시작 용량의 50%로 시작한 후, 독성과 치료 반응을 보며 용량 조절 권고",
+        "source": "미국 NCBI, 「Capecitabine Therapy and DPYD Genotype』.",
+        "schedule": {
+          "type": "daily",
+          "timesPerDay": 2,
+          "meal": "after",
+          "minutesAfterMeal": 30
+        }
+      }
+    },
+    "UGT1A1": {
+      "*28/*28": {
+        "gene": "UGT1A1",
+        "genotype": "*28/*28",
+        "drugName": "이리노테칸 주사제",
+        "ingredient": "이리노테칸염산염",
+        "mealRelation": "식사 무관",
+        "dosingInterval": "3주마다 1회씩 투여",
+        "sideEffects": "심한 호중구감소증, 설사 위험 증가",
+        "details": "활성 대사산물의 불활성화가 감소함. 표준 시작 용량의 70%로 시작하고, 호중구 수치와 내약성에 따라 조절하도록 권고",
+        "source": "ClinPGx의 DPWG 지침 요약 및 UGT1A1 유전자 검사 해설 논문.",
+        "schedule": {
+          "type": "every_n_days",
+          "everyDays": 21,
+          "meal": "any"
+        }
+      }
+    },
+    "NUDT15": {
+      "*1/*3": {
+        "gene": "NUDT15",
+        "genotype": "*1/*3",
+        "drugName": "아자티오프린",
+        "ingredient": "아자티오프린",
+        "mealRelation": "식사 무관",
+        "dosingInterval": "보통 1일 1회(처방에 따라 조절)",
+        "sideEffects": "백혈구 감소, 감염 위험 증가, 골수 기능 저하",
+        "details": "약물 대사에 관여하는 NUDT15의 기능이 감소하여 일반적인 용량에서도 골수 억제 위험이 높아질 수 있음. 유전형에 따라 약물의 시작 용량을 조절해야 함.",
+        "source": "CPIC 공식 가이드라인",
+        "schedule": {
+          "type": "daily",
+          "timesPerDay": 1,
+          "meal": "any"
+        }
+      }
+    },
+    "CYP2B6": {
+      "*6/*6": {
+        "gene": "CYP2B6",
+        "genotype": "*6/*6",
+        "drugName": "에파비렌즈",
+        "ingredient": "에파비렌즈",
+        "mealRelation": "공복",
+        "dosingInterval": "1일 1회",
+        "sideEffects": "어지러움, 수면 장애, 집중력 저하",
+        "details": "CYP2B6의 대사 기능이 낮아 약물이 체내에 오래 남을 수 있음. 약물 농도 증가로 신경계 부작용이 나타날 위험이 높아 용량 조절을 고려함",
+        "source": "CPIC 공식 가이드라인",
+        "schedule": {
+          "type": "daily",
+          "timesPerDay": 1,
+          "meal": "empty"
+        }
+      }
+    },
+    "CYP3A5": {
+      "*1/*3": {
+        "gene": "CYP3A5",
+        "genotype": "*1/*3",
+        "drugName": "타크로리무스 캡슐",
+        "ingredient": "타크로리무스",
+        "mealRelation": "식사 무관",
+        "dosingInterval": "1일 2회",
+        "sideEffects": "신독성, 손떨림, 고혈압, 고혈당, 감염 위험 증가",
+        "details": "CYP3A5 발현형으로, 동일 용량에서 약물 혈중농도가 낮아질 수 있음. CPIC 지침에서는 표준 시작 용량의 1.5~2배를 권고하되, 총 시작 용량은 0.3 mg/kg/일을 초과하지 않도록 함. 이후 혈중 약물농도 모니터링(TDM)을 통해 용량 조절",
+        "source": "CPIC 「CYP3A5 유전형과 타크로리무스 투여 지침』, DailyMed 타크로리무스 캡슐 허가사항",
+        "schedule": {
+          "type": "daily",
+          "timesPerDay": 2,
+          "meal": "any"
+        }
+      }
+    },
+    "NAT2": {
+      "*5/*6": {
+        "gene": "NAT2",
+        "genotype": "*5/*6",
+        "drugName": "이소니아지드",
+        "ingredient": "이소니아지드",
+        "mealRelation": "공복",
+        "dosingInterval": "1일 1회",
+        "sideEffects": "약물이 몸에 오래 남아 간 손상이나 말초 신경병증 등의 부작용 위험이 높아질 수 있음",
+        "details": "NAT2 유전형에 따라 이소니아지드의 대사 속도가 달라진다. 따라서 유전자 검사는 약물의 부작용 위험을 예측하고 적절한 치료 방법을 결정하는 데 도움을 줄 수 있다.",
+        "source": "Laboratory Medicine – 약물유전체학 관련 연구, NAT2 유전자형에 따른 이소니아지드 연구, 약학정보원 – 이소니아지드 복약안내",
+        "schedule": {
+          "type": "daily",
+          "timesPerDay": 1,
+          "meal": "empty"
+        }
+      }
+    }
+  }
+}

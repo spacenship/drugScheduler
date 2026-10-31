@@ -1,45 +1,10 @@
-"use client";
-
-import { useState } from "react";
+import { Suspense } from "react";
 import { InfoNotice } from "@/components/InfoNotice";
-import { ResultView } from "@/components/ResultView";
 import { ScheduleForm } from "@/components/ScheduleForm";
-import { ScheduleView } from "@/components/ScheduleView";
-import { findGeneEntry } from "@/lib/genes";
-import type { ScheduleInput } from "@/types";
+import { parseQuery } from "@/lib/query";
 
-type Step = "input" | "result" | "schedule";
-
-export default function Home() {
-  const [step, setStep] = useState<Step>("input");
-  const [input, setInput] = useState<ScheduleInput | null>(null);
-  const entry = input ? findGeneEntry(input.gene, input.genotype) : null;
-
-  if (input && step === "result") {
-    return (
-      <ResultView
-        input={input}
-        entry={entry}
-        onBack={() => setStep("input")}
-        onNext={() => setStep("schedule")}
-      />
-    );
-  }
-
-  if (input && step === "schedule") {
-    return (
-      <ScheduleView
-        input={input}
-        entry={entry}
-        onBack={() => setStep("result")}
-        onRestart={() => {
-          setInput(null);
-          setStep("input");
-        }}
-      />
-    );
-  }
-
+/** 화면 1: 유전자 정보와 생활 시간 입력 */
+export default function Home(props: PageProps<"/">) {
   return (
     <main className="flex flex-1 flex-col gap-8 px-5 py-6">
       <InfoNotice>교육용 시뮬레이터입니다. 실제 처방이 아닙니다</InfoNotice>
@@ -49,13 +14,14 @@ export default function Home() {
         <p className="text-body-md text-ink-secondary">유전형과 생활 시간을 알려 주세요</p>
       </div>
 
-      <ScheduleForm
-        initial={input}
-        onSubmit={(value) => {
-          setInput(value);
-          setStep("result");
-        }}
-      />
+      <Suspense fallback={<ScheduleForm initial={null} />}>
+        <FormWithQuery searchParams={props.searchParams} />
+      </Suspense>
     </main>
   );
+}
+
+/** 결과 화면에서 돌아오면 쿼리로 앞서 입력한 값을 채운다 */
+async function FormWithQuery({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
+  return <ScheduleForm initial={parseQuery(await searchParams)} />;
 }

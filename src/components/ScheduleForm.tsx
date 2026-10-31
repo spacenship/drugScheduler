@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Moon, Sun, Utensils } from "lucide-react";
 import { listGenes, listGenotypes } from "@/lib/genes";
+import { toQuery } from "@/lib/query";
 import { cn } from "@/lib/utils";
 import type { ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {
   /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
   initial: ScheduleInput | null;
-  onSubmit: (input: ScheduleInput) => void;
 }
 
 const TIME_FIELDS = [
@@ -54,7 +55,8 @@ function Chip({
   );
 }
 
-export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
+export function ScheduleForm({ initial }: ScheduleFormProps) {
+  const router = useRouter();
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
   const [times, setTimes] = useState<Record<TimeKey, string>>(
@@ -82,7 +84,7 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!canSubmit) return;
-    onSubmit({ gene, genotype, ...times });
+    router.push(`/result?${toQuery({ gene, genotype, ...times })}`);
   }
 
   return (

@@ -1,4 +1,4 @@
-import { formatTime, MEALS, toMinutes } from "@/lib/time";
+import { formatDuration, formatTime, MEALS, toMinutes } from "@/lib/time";
 
 /** 공복은 식사 1시간 전으로 본다 */
 const EMPTY_STOMACH_MINUTES = 60;
@@ -9,16 +9,13 @@ const MAX_MEAL_DOSES = 3;
 /** 식사와 상관없는 약을 하루에 나눌 때 복용 사이 최대 간격 */
 const MAX_GAP_MINUTES = 12 * 60;
 
-function slot(minutes, note) {
-  return { minutes, time: formatTime(minutes), note };
-}
-
-/** 몇 분 → "30분" / "1시간" / "1시간 30분" */
-function formatDuration(minutes) {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}분`;
-  return m === 0 ? `${h}시간` : `${h}시간 ${m}분`;
+/**
+ * @param {number} minutes
+ * @param {string} note
+ * @param {import("@/types").DoseMeal} [meal] 식후·공복 약이 맞추는 식사. 시간표에서 그 식사와 묶어 보여 준다
+ */
+function slot(minutes, note, meal) {
+  return { minutes, time: formatTime(minutes), note, ...(meal ? { meal } : {}) };
 }
 
 /** 입력한 생활 시간과 약의 복용 규칙(schedule)으로 하루 시간표를 계산한다 */
@@ -68,6 +65,7 @@ export function buildSchedule(drug, input) {
   // 1회 → 아침, 2회 → 아침·저녁, 3회 → 아침·점심·저녁
   // 거른 끼니는 시각이 null이다
   const meals = MEALS.map(({ key, label }) => ({
+    key,
     label,
     at: input[key] == null ? null : toMinutes(input[key]),
   }));
@@ -82,12 +80,13 @@ export function buildSchedule(drug, input) {
     };
   }
 
-  const doses = picked.map(({ label, at }) => {
+  const doses = picked.map(({ key, label, at }) => {
     if (schedule.meal === "after") {
       const after = schedule.minutesAfterMeal ?? 0;
       return slot(
         at + after,
         after === 0 ? `${label} 식사 직후` : `${label} 식사 ${formatDuration(after)} 뒤`,
+        { key, when: "after" },
       );
     }
     // 식전은 식사 30분 전, 공복은 1시간 전
@@ -96,10 +95,11 @@ export function buildSchedule(drug, input) {
         ? (schedule.minutesBeforeMeal ?? DEFAULT_BEFORE_MEAL_MINUTES)
         : EMPTY_STOMACH_MINUTES;
     const t = at - before;
+    const meal = { key, when: "before" };
     // 기상 전이면 기상 시각으로 당긴다
     return t < wake
-      ? slot(wake, `기상 직후 (${label} 식사 전)`)
-      : slot(t, `${label} 식사 ${formatDuration(before)} 전`);
+      ? slot(wake, `기상 직후 (${label} 식사 전)`, meal)
+      : slot(t, `${label} 식사 ${formatDuration(before)} 전`, meal);
   });
 
   return { status: "ok", doses };

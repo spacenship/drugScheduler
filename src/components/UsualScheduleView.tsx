@@ -74,7 +74,12 @@ export function UsualScheduleView({
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {names.map((name) => (
-                  <Chip key={name} selected={selected.includes(name)} onClick={() => toggle(name)}>
+                  <Chip
+                    key={name}
+                    theme={group.theme}
+                    selected={selected.includes(name)}
+                    onClick={() => toggle(name)}
+                  >
                     {name}
                   </Chip>
                 ))}

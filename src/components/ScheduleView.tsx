@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
@@ -7,11 +8,11 @@ import type { GeneEntry, ScheduleInput } from "@/types";
 interface ScheduleViewProps {
   input: ScheduleInput;
   entry: GeneEntry | null;
-  onBack: () => void;
-  onRestart: () => void;
+  backHref: string;
+  restartHref: string;
 }
 
-export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewProps) {
+export function ScheduleView({ input, entry, backHref, restartHref }: ScheduleViewProps) {
   const result = entry ? buildSchedule(entry, input) : null;
 
   const lifeTimes = [
@@ -24,7 +25,7 @@ export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewPr
 
   return (
     <>
-      <NavBar title="복약 시간표" onBack={onBack} />
+      <NavBar title="복약 시간표" backHref={backHref} />
       <div className="flex flex-1 flex-col gap-8 px-5 pb-6">
         <div className="flex flex-col gap-1">
           <p className="text-eyebrow text-ink-secondary tabular">
@@ -75,13 +76,12 @@ export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewPr
 
         <div className="mt-auto flex flex-col gap-4">
           <InfoNotice>실제 복용 시간은 의료진 지시를 따릅니다</InfoNotice>
-          <button
-            type="button"
-            onClick={onRestart}
-            className="bg-primary text-on-primary text-button active:bg-primary-pressed h-14 w-full rounded-md"
+          <Link
+            href={restartHref}
+            className="bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md"
           >
             처음으로
-          </button>
+          </Link>
         </div>
       </div>
     </>

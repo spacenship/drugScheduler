@@ -1,10 +1,6 @@
+import Link from "next/link";
 import { ChevronRight, Clock, Dna } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
-
-interface HomeViewProps {
-  onOpenGene: () => void;
-  onOpenUsual: () => void;
-}
 
 interface BannerProps {
   theme: "green" | "gray";
@@ -13,7 +9,7 @@ interface BannerProps {
   description: string;
   action: string;
   icon: React.ReactNode;
-  onClick: () => void;
+  href: string;
 }
 
 const THEME = {
@@ -21,14 +17,13 @@ const THEME = {
   gray: { card: "bg-surface-muted", badge: "bg-ink-secondary", tile: "bg-ink-secondary" },
 } as const;
 
-/** 홈의 배너. 카드 전체가 하나의 버튼이라 안쪽에는 span만 쓴다 */
-function Banner({ theme, badge, title, description, action, icon, onClick }: BannerProps) {
+/** 홈의 배너. 카드 전체가 하나의 링크라 안쪽에는 span만 쓴다 */
+function Banner({ theme, badge, title, description, action, icon, href }: BannerProps) {
   const color = THEME[theme];
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <Link
+      href={href}
       className={`${color.card} flex w-full flex-col items-start gap-3 rounded-lg p-5 text-left`}
     >
       <span
@@ -51,11 +46,11 @@ function Banner({ theme, badge, title, description, action, icon, onClick }: Ban
           {icon}
         </span>
       </span>
-    </button>
+    </Link>
   );
 }
 
-export function HomeView({ onOpenGene, onOpenUsual }: HomeViewProps) {
+export function HomeView() {
   return (
     <main className="flex flex-1 flex-col gap-8 px-5 py-6">
       <InfoNotice>교육용 시뮬레이터입니다. 실제 처방이 아닙니다</InfoNotice>
@@ -73,7 +68,7 @@ export function HomeView({ onOpenGene, onOpenUsual }: HomeViewProps) {
           description="유전형과 생활 시간을 알려 주면 맞는 약과 복용 시각을 보여 줘요"
           action="시간표 만들기"
           icon={<Dna className="size-6" strokeWidth={2} aria-hidden />}
-          onClick={onOpenGene}
+          href="/gene"
         />
         <Banner
           theme="gray"
@@ -82,7 +77,7 @@ export function HomeView({ onOpenGene, onOpenUsual }: HomeViewProps) {
           description="평소 먹는 약을 골라 하루 시간표에 모아 볼 수 있어요"
           action="시간표 보기"
           icon={<Clock className="size-6" strokeWidth={2} aria-hidden />}
-          onClick={onOpenUsual}
+          href="/usual"
         />
       </section>
     </main>

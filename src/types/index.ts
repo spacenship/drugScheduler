@@ -41,15 +41,31 @@ export interface NoDataResult {
 /** 유전형으로 약을 찾은 결과: 유전형 권고(gene)와 약 기본 정보(drug)를 약 이름으로 연결한다 */
 export type LookupResult = { status: "found"; gene: GeneEntry; drug: DrugInfo } | NoDataResult;
 
-/** 입력 화면에서 받는 값. 시각은 "HH:mm" 형식 */
-export interface ScheduleInput {
-  gene: string;
-  genotype: string;
+/** 생활 시간. 시각은 "HH:mm" 형식 */
+export interface LifeTimes {
   wakeTime: string;
   sleepTime: string;
   breakfast: string;
   lunch: string;
   dinner: string;
+}
+
+/** 유전형 입력 화면에서 받는 값 */
+export interface ScheduleInput extends LifeTimes {
+  gene: string;
+  genotype: string;
+}
+
+/** 평소 복용하는 약 한 가지 */
+export interface Medication {
+  name: string;
+  timesPerDay: number;
+  meal: Meal;
+}
+
+/** 복용 약 입력 화면에서 받는 값 */
+export interface MedicationScheduleInput extends LifeTimes {
+  medications: Medication[];
 }
 
 /** 하루 시간표의 복용 한 번 */

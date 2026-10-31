@@ -1,4 +1,4 @@
-import { Pill } from "lucide-react";
+import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { buildSchedule } from "@/lib/schedule";
@@ -51,19 +51,12 @@ export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewPr
           <h2 className="text-title-md">복용 시각</h2>
           {entry && result?.status === "ok" ? (
             result.doses.map((dose) => (
-              <div
+              <DoseCard
                 key={dose.minutes}
-                className="bg-green-soft flex items-end justify-between gap-3 rounded-lg p-5"
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="text-number-xl tabular">{dose.time}</span>
-                  <span className="text-title-sm">{entry.drugName}</span>
-                  <span className="text-body-md text-ink-secondary">{dose.note}</span>
-                </div>
-                <span className="bg-green-strong text-on-primary flex size-12 shrink-0 items-center justify-center rounded-md">
-                  <Pill className="size-6" strokeWidth={2} aria-hidden />
-                </span>
-              </div>
+                time={dose.time}
+                drugName={entry.drugName}
+                note={dose.note}
+              />
             ))
           ) : (
             <div className="bg-surface-muted flex flex-col items-start gap-2 rounded-lg p-5">

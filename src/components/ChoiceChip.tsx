@@ -6,7 +6,7 @@ interface ChoiceChipProps {
   children: React.ReactNode;
 }
 
-/** 여러 선택지 중 하나를 고르는 칩. 고르면 파란 바탕으로 바뀐다 */
+/** 선택지 칩. 고르면 파란 바탕으로 바뀌고, 글자가 길면 두 줄로 늘어난다 */
 export function ChoiceChip({ selected, onClick, children }: ChoiceChipProps) {
   return (
     <button
@@ -14,7 +14,7 @@ export function ChoiceChip({ selected, onClick, children }: ChoiceChipProps) {
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "text-title-sm h-14 rounded-md px-3",
+        "text-title-sm min-h-14 rounded-md px-3 py-2",
         selected ? "bg-primary text-on-primary" : "bg-surface-muted text-ink",
       )}
     >

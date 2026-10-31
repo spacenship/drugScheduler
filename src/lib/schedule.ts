@@ -1,5 +1,5 @@
 import { formatTime, toMinutes } from "@/lib/time";
-import type { DoseSlot, GeneEntry, ScheduleInput, ScheduleResult } from "@/types";
+import type { DoseSlot, LifeTimes, Schedule, ScheduleResult } from "@/types";
 
 /** 공복은 식사 1시간 전으로 본다 */
 const EMPTY_STOMACH_MINUTES = 60;
@@ -21,8 +21,8 @@ function formatDuration(minutes: number): string {
 }
 
 /** 입력한 생활 시간과 약의 복용 규칙(schedule)으로 하루 시간표를 계산한다 */
-export function buildSchedule(entry: GeneEntry, input: ScheduleInput): ScheduleResult {
-  const { schedule } = entry;
+export function buildSchedule(drug: { schedule: Schedule }, input: LifeTimes): ScheduleResult {
+  const { schedule } = drug;
 
   if (schedule.type === "every_n_days") {
     return {

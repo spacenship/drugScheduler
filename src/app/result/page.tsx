@@ -14,10 +14,45 @@ function first(value: string | string[] | undefined): string {
   return (Array.isArray(value) ? value[0] : value) ?? "";
 }
 
+const PRIMARY_LINK =
+  "bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md";
+
 /** /result?gene=CYP2D6&genotype=*1/*1x2 처럼 유전자와 유전형을 받아 결과를 보여 준다 */
 async function Result({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
-  return <ResultDetails result={lookupByGenotype(first(params.gene), first(params.genotype))} />;
+  const gene = first(params.gene);
+  const genotype = first(params.genotype);
+  const result = lookupByGenotype(gene, genotype);
+  // 시간표 화면(/schedule)에 유전자·유전형을 주소로 넘겨 준다
+  const scheduleHref = `/schedule?${new URLSearchParams({ gene, genotype })}`;
+
+  return (
+    <>
+      <ResultDetails result={result} />
+
+      <div className="mt-auto flex flex-col gap-4">
+        <InfoNotice>실제 복용은 의료진과 상의하세요</InfoNotice>
+        {result.status === "found" ? (
+          <>
+            <Link href={scheduleHref} className={PRIMARY_LINK}>
+              시간표 보기
+            </Link>
+            <Link
+              href="/"
+              className="text-primary text-button flex h-12 w-full items-center justify-center"
+            >
+              처음으로
+            </Link>
+          </>
+        ) : (
+          // 자료가 없으면 시간표를 만들 수 없으므로 처음으로만 둔다
+          <Link href="/" className={PRIMARY_LINK}>
+            처음으로
+          </Link>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default function ResultPage({ searchParams }: { searchParams: SearchParams }) {
@@ -30,16 +65,6 @@ export default function ResultPage({ searchParams }: { searchParams: SearchParam
         >
           <Result searchParams={searchParams} />
         </Suspense>
-
-        <div className="mt-auto flex flex-col gap-4">
-          <InfoNotice>실제 복용은 의료진과 상의하세요</InfoNotice>
-          <Link
-            href="/"
-            className="bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md"
-          >
-            처음으로
-          </Link>
-        </div>
       </main>
     </>
   );

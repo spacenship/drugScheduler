@@ -96,6 +96,20 @@
  */
 
 /**
+ * 카드·배지·아이콘 타일의 색 테마
+ * @typedef {"green" | "orange" | "purple" | "teal" | "gray"} Theme
+ */
+
+/**
+ * 비슷한 약끼리 묶은 계열. 같은 계열은 모든 화면에서 같은 색이다
+ * @typedef {object} DrugGroup
+ * @property {string} key
+ * @property {string} label
+ * @property {Theme} theme
+ * @property {string[]} drugs data.json의 drugName
+ */
+
+/**
  * 평소 복약 시간표에서 하루를 나누는 복용 시점
  * @typedef {"wake" | "breakfast" | "lunch" | "dinner" | "sleep"} SlotKey
  */

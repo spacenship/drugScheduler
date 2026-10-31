@@ -1,4 +1,6 @@
 import { Pill, TriangleAlert } from "lucide-react";
+import { groupOf } from "@/lib/drugGroups";
+import { DEFAULT_THEME, THEME_CLASSES } from "@/lib/theme";
 
 function InfoRow({ name, value }) {
   return (
@@ -15,11 +17,15 @@ function InfoRow({ name, value }) {
  */
 export function ResultDetails({ result }) {
   const { gene, drug } = result;
+  const group = groupOf(drug.drugName);
+  const color = THEME_CLASSES[group?.theme ?? DEFAULT_THEME];
 
   return (
     <>
       <div className="flex flex-col items-start gap-2">
-        <span className="bg-green-strong text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5">
+        <span
+          className={`${color.badge} text-on-primary text-badge flex h-7 items-center rounded-sm px-2.5`}
+        >
           {gene.gene} {gene.genotype}
         </span>
         <h2 className="text-display">{drug.drugName}</h2>
@@ -31,10 +37,12 @@ export function ResultDetails({ result }) {
         <h2 className="text-title-md">복용 정보</h2>
         <div className="bg-surface-muted flex flex-col gap-4 rounded-md p-4">
           <div className="flex items-center gap-3">
-            <span className="bg-green-strong text-on-primary flex size-12 items-center justify-center rounded-md">
+            <span
+              className={`${color.tile} text-on-primary flex size-12 items-center justify-center rounded-md`}
+            >
               <Pill className="size-6" strokeWidth={2} aria-hidden />
             </span>
-            <span className="text-title-sm">추천 약</span>
+            <span className="text-title-sm">추천 약{group && ` · ${group.label}`}</span>
           </div>
           <InfoRow name="복용 간격" value={drug.dosingInterval} />
           <div className="bg-border h-px" />

@@ -235,15 +235,15 @@ components:
 
 참고한 디자인: Dribbble "Medication Reminder Mobile App"(https://dribbble.com/shots/23235852-Medication-Reminder-Mobile-App). 모양만 참고하고, 접근성과 수업 범위에 맞게 아래처럼 바꿨다.
 
-| 참고 이미지 | 우리 앱 |
-| --- | --- |
-| 파란 주 버튼 + 그 아래 글자 버튼 하나 | 그대로 쓴다 |
-| 약 종류마다 색 카드(주황 = 물약, 초록 = 캡슐) | 추천 약 = 초록, 가상 약 나음정 = 주황, 판단 자료 없음 = 회색 |
-| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 초록·주황으로 바꿨다 |
-| 연한 회색 보조 글자 | 더 진한 회색(#5F6672)으로 바꿨다 |
-| 본문 약 16px | 18px로 키웠다 |
-| SF Pro 계열 영문 글꼴 | 한글이 비슷한 느낌인 Pretendard |
-| 하단 파란 탭 바, 지도, 약국 목록, 온라인 구매 | 쓰지 않는다 |
+| 참고 이미지                                         | 우리 앱                                                      |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| 파란 주 버튼 + 그 아래 글자 버튼 하나               | 그대로 쓴다                                                  |
+| 약 종류마다 색 카드(주황 = 물약, 초록 = 캡슐)       | 추천 약 = 초록, 가상 약 나음정 = 주황, 판단 자료 없음 = 회색 |
+| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 초록·주황으로 바꿨다                        |
+| 연한 회색 보조 글자                                 | 더 진한 회색(#5F6672)으로 바꿨다                             |
+| 본문 약 16px                                        | 18px로 키웠다                                                |
+| SF Pro 계열 영문 글꼴                               | 한글이 비슷한 느낌인 Pretendard                              |
+| 하단 파란 탭 바, 지도, 약국 목록, 온라인 구매       | 쓰지 않는다                                                  |
 
 ## Colors
 
@@ -266,23 +266,26 @@ components:
 글꼴은 Pretendard. HTML `<head>`에 아래 한 줄을 넣고, 안 될 때를 위해 대체 글꼴을 함께 적는다.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+/>
 ```
 
 `font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;`
 
-| 이름 | 크기 / 굵기 | 쓰는 곳 |
-| --- | --- | --- |
-| display | 28px / 600 | 화면 큰 제목, 약 이름 |
-| eyebrow | 20px / 500, ink-secondary | 큰 제목 바로 위의 작은 머리말 |
-| title-md | 22px / 600 | 구역 제목(유전형, 복용 정보, 복용 시각) |
-| title-sm | 20px / 600 | 카드 제목, 칩 글자, 상단 바 제목 |
-| body-lg | 18px / 400 | 본문, 권고 문장, 주의 문구 |
-| body-md | 16px / 400 | 부제목, 안내 상자 글 |
-| label | 15px / 500, ink-secondary | 입력 칸 라벨, 정보 이름 |
-| badge | 14px / 600 | 배지 글자(가장 작은 글자) |
-| number-xl | 28px / 600 | 시간표의 복용 시각 |
-| number-lg | 24px / 600 | 입력한 시각, 복용 정보 값 |
+| 이름      | 크기 / 굵기               | 쓰는 곳                                 |
+| --------- | ------------------------- | --------------------------------------- |
+| display   | 28px / 600                | 화면 큰 제목, 약 이름                   |
+| eyebrow   | 20px / 500, ink-secondary | 큰 제목 바로 위의 작은 머리말           |
+| title-md  | 22px / 600                | 구역 제목(유전형, 복용 정보, 복용 시각) |
+| title-sm  | 20px / 600                | 카드 제목, 칩 글자, 상단 바 제목        |
+| body-lg   | 18px / 400                | 본문, 권고 문장, 주의 문구              |
+| body-md   | 16px / 400                | 부제목, 안내 상자 글                    |
+| label     | 15px / 500, ink-secondary | 입력 칸 라벨, 정보 이름                 |
+| badge     | 14px / 600                | 배지 글자(가장 작은 글자)               |
+| number-xl | 28px / 600                | 시간표의 복용 시각                      |
+| number-lg | 24px / 600                | 입력한 시각, 복용 정보 값               |
 
 - 본문은 18px 아래로 내리지 않는다. 14px은 배지에만 쓴다.
 - 한글 줄바꿈은 `word-break: keep-all;`로 단어 중간에서 끊기지 않게 한다.
@@ -403,7 +406,8 @@ components:
 
 ```html
 <script src="https://unpkg.com/lucide@latest"></script>
-<i data-lucide="pill"></i>  <!-- 화면을 그린 뒤 lucide.createIcons(); 호출 -->
+<i data-lucide="pill"></i>
+<!-- 화면을 그린 뒤 lucide.createIcons(); 호출 -->
 ```
 
 쓸 아이콘: pill(알약), sun(기상), moon(취침), utensils(식사), info(안내), triangle-alert(주의), chevron-left(뒤로), chevron-right(목록 줄).

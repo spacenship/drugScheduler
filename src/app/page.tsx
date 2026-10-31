@@ -1,10 +1,61 @@
+"use client";
+
+import { useState } from "react";
+import { InfoNotice } from "@/components/InfoNotice";
+import { ResultView } from "@/components/ResultView";
+import { ScheduleForm } from "@/components/ScheduleForm";
+import { ScheduleView } from "@/components/ScheduleView";
+import { findGeneEntry } from "@/lib/genes";
+import type { ScheduleInput } from "@/types";
+
+type Step = "input" | "result" | "schedule";
+
 export default function Home() {
+  const [step, setStep] = useState<Step>("input");
+  const [input, setInput] = useState<ScheduleInput | null>(null);
+  const entry = input ? findGeneEntry(input.gene, input.genotype) : null;
+
+  if (input && step === "result") {
+    return (
+      <ResultView
+        input={input}
+        entry={entry}
+        onBack={() => setStep("input")}
+        onNext={() => setStep("schedule")}
+      />
+    );
+  }
+
+  if (input && step === "schedule") {
+    return (
+      <ScheduleView
+        input={input}
+        entry={entry}
+        onBack={() => setStep("result")}
+        onRestart={() => {
+          setInput(null);
+          setStep("input");
+        }}
+      />
+    );
+  }
+
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
-      <h1 className="text-3xl font-semibold tracking-tight">DrugScheduler</h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        복용 약 일정을 관리하는 웹앱입니다.
-      </p>
+    <main className="flex flex-1 flex-col gap-8 px-5 py-6">
+      <InfoNotice>교육용 시뮬레이터입니다. 실제 처방이 아닙니다</InfoNotice>
+
+      <div className="flex flex-col gap-2">
+        <h1 className="text-display">복약 시간표 만들기</h1>
+        <p className="text-body-md text-ink-secondary">유전형과 생활 시간을 알려 주세요</p>
+      </div>
+
+      <ScheduleForm
+        initial={input}
+        onSubmit={(value) => {
+          setInput(value);
+          setStep("result");
+        }}
+      />
     </main>
   );
 }

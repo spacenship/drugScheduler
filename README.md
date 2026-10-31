@@ -21,8 +21,6 @@ npm run dev
 
 브라우저에서 http://localhost:3000 을 엽니다.
 
-data : https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
-
 ## 스크립트
 
 | 명령어                            | 설명                      |
@@ -34,6 +32,16 @@ data : https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5v
 | `npm run format` / `format:check` | Prettier 포맷 적용 / 검사 |
 | `npm run typecheck`               | TypeScript 타입 검사      |
 
+## 데이터
+
+- `data/gene_data.json`: 유전자·유전형별 추천 약 정보 (화면에서 사용)
+- `data/data.json`: 약 이름별 기본 정보
+- 원본 스프레드시트: https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
+
+## 디자인
+
+디자인 시스템은 [`docs/design.md`](docs/design.md)를 따릅니다. 토큰은 `src/app/globals.css`의 `@theme`에 정의되어 있습니다.
+
 ## 폴더 구조
 
 ```
@@ -42,5 +50,6 @@ src/
   components/  # 공용 UI 컴포넌트
   lib/         # 유틸리티 함수
   types/       # 공용 타입 정의
+data/          # 약·유전형 데이터 (JSON)
 public/        # 정적 파일
 ```

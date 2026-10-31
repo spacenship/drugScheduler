@@ -334,20 +334,23 @@ components:
 <  유전자 복약 시간표                                   nav-bar, 뒤로 가기는 홈으로
 [ (i) 교육용 시뮬레이터입니다. 실제 처방이 아닙니다 ]   info-box, 항상 보인다
 복약 시간표 만들기                                    display
-유전형과 생활 시간을 알려 주세요                        body-md, ink-secondary
+유전자와 생활 시간을 알려 주세요                        body-md, ink-secondary
 
-유전형                                               title-md
-[  *1/*1  ] [  *1/*2  ]                               choice-chip 2열 2줄
-[  *2/*2  ] [ 잘 모름·기타 ]
+유전자                                               title-md
+유전자명                                             label
+[ 예: CYP2D6                         ]                input-text, 직접 입력
+유전형                                               label
+[ 예: *1/*1x2                        ]                input-text, 직접 입력
 
 생활 시간                                            title-md
 (해) 기상          (달) 취침                           icon-tile-neutral + label
 [  07:00  ]        [  23:00  ]                        input-time 2열
+(수저) 아침 식사   (수저) 점심 식사                     식사 3끼도 같은 input-time
 
 [            결과 보기            ]                     button-primary
 ```
 
-유전형을 고르기 전에는 '결과 보기'를 button-primary-disabled로 보여 준다. '잘 모름·기타'는 수업에서 정한 이름으로 바꾼다.
+유전자명과 유전형을 직접 타이핑한다. 두 칸 중 하나라도 비어 있으면 '결과 보기'를 button-primary-disabled로 보여 준다. 대소문자와 띄어쓰기는 달라도 같은 이름으로 본다(cyp2d6 = CYP2D6). 표에 있는 값은 자동완성 제안(datalist)으로만 보여 주고, 입력 칸은 항상 직접 쓸 수 있다. 입력 칸은 input-time과 같은 회색 바탕, 높이 56px, 모서리 12px이고 글자는 title-sm이다. 안내 글(placeholder)도 #5F6672를 쓴다.
 
 ### 화면 2 결과 카드 (참고: Tetracycline 상세 화면)
 
@@ -372,7 +375,7 @@ components:
 [            시간표 보기            ]                   button-primary
 ```
 
-판단 자료가 없는 유전형이면 배지는 badge-gray "판단 자료 없음", 제목은 "추천할 약을 판단할 자료가 없습니다", 복용 정보 상자 대신 med-card-empty에 이유를 한 줄로 쓴다. 버튼은 그대로 '시간표 보기'.
+입력한 유전자나 유전형이 표에 없으면 결과 카드 대신 '정보 부족' 화면으로 넘어간다. 배지는 badge-gray "판단 자료 없음", 제목은 "○○ 유전자에 대한 정보가 부족합니다"(없는 유전자) 또는 "○○ ○○ 유전형에 대한 정보가 부족합니다"(있는 유전자의 없는 유전형)이다. 복용 정보 상자 대신 med-card-empty에 이유를 쓰고, 그 아래에 '정보가 있는 유전자'(또는 유전형)를 time-chip으로 보여 준다. 시간표는 만들 수 없으므로 '시간표 보기' 대신 button-primary '다시 입력하기'를 두고, 누르면 입력했던 값이 남은 채 화면 1로 돌아간다.
 
 ### 화면 3 복약 시간표 (참고: Roaccutane Active course 화면)
 

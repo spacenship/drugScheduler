@@ -144,7 +144,7 @@ components:
     typography: "{typography.number-lg}"
     rounded: "{rounded.md}"
     height: 56px
-    padding: 0 16px
+    padding: 0 10px
   badge-green:
     backgroundColor: "{colors.green-strong}"
     textColor: "{colors.on-primary}"
@@ -532,7 +532,7 @@ components:
 - **button-text**: 파란 글자만 있는 보조 버튼. 필요하면 주 버튼 바로 아래에 하나만 둔다.
 - **choice-chip**: 회색 바탕 칩. 고르면 파란 바탕 + 흰 글자로 바뀐다(참고 이미지의 'Online stores' 선택 상태). 유전자·유전형 칩에 쓰며 한 번에 하나만 고른다. 높이는 56px 이상이며 글자가 길면 두 줄로 늘어난다.
 - **choice-chip-drug**: 약 이름 칩. 파란 바탕이 눈에 거슬려 **흰 바탕**을 쓴다. 흰 바탕 위의 흰 칩이라 2px #E6E7EB 테두리로 모양을 잡고(그래서 고르기 전후에 칩 크기가 변하지 않는다), 고르면 테두리가 그 약 계열의 진한 색으로 바뀌고 왼쪽에 같은 색 체크(Lucide `check`)가 붙는다. 색만으로 고른 것을 알리지 않도록 체크를 함께 쓴다. 평소 복약 화면에서 여러 개를 고를 수 있고, 높이와 줄바꿈은 choice-chip과 같다.
-- **input-time**: 회색 바탕, 테두리 없음, 높이 56px, 글자 24px. 위에 label을 둔다. `<input type="time">`을 쓴다.
+- **input-time**: 회색 바탕, 테두리 없음, 높이 56px, 글자 24px. 위에 label을 둔다. `<input type="time">`을 쓴다. 2열(칸 폭 약 169px)에서 데스크톱 크롬이 "07:00 AM"의 오전/오후 글자를 자르지 않도록 좌우 여백은 10px, 글자 간격은 살짝 좁힌다(tracking-tight).
 - **badge**: 카드나 제목 위에 붙는 작은 이름표. 약 테마의 진한 색 바탕 + 흰 글자.
 - **med-card**: 약 테마 연한 바탕, 모서리 16px, 안 여백 20px. 왼쪽에 시각이나 배지·제목·부제목, 오른쪽 아래에 아이콘 타일.
 - **banner**: 홈에서 화면으로 들어가는 카드. med-card와 같은 모양(연한 테마 바탕, 모서리 16px, 안 여백 20px)이고 위에서부터 한 줄(왼쪽에 배지, 오른쪽에 48px 아이콘 타일) → title-md 제목 → body-md 회색 설명 → label 회색 보조 줄(들어 있는 자료) → 맨 아래 한 줄(왼쪽에 button 글자 크기의 파란 안내 글, 오른쪽에 흰 바탕 44px 칸 안의 파란 꺾쇠)로 쌓는다. 카드 전체가 하나의 button이다. 유전자 맞춤은 초록, 평소 복약은 약 하나에 묶이지 않는 화면이라 회색 테마.

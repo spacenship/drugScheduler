@@ -31,7 +31,7 @@ export function LifeTimeFields({ value, onChange }: LifeTimeFieldsProps) {
             required
             value={value[key]}
             onChange={(e) => onChange({ ...value, [key]: e.target.value })}
-            className="bg-surface-muted text-number-lg tabular h-14 rounded-md px-4"
+            className="bg-surface-muted text-number-lg tabular h-14 rounded-md px-2.5 tracking-tight"
           />
         </label>
       ))}

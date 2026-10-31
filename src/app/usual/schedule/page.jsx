@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { UsualScheduleView } from "@/components/UsualScheduleView";
+import { checkDrugExists } from "@/lib/drugLookup";
 import { medicationToDrug } from "@/lib/medications";
 import { parseMedicationQuery, toMedicationQuery } from "@/lib/query";
 
@@ -25,6 +26,10 @@ export default function UsualSchedulePage(props) {
 async function UsualSchedule({ searchParams }) {
   const input = parseMedicationQuery(await searchParams);
   if (!input) redirect("/usual");
+
+  // 실제로 없는 약이 섞여 있으면 주소를 직접 고쳐도 시간표를 만들지 않는다(확인하지 못한 약은 막지 않는다)
+  const checks = await Promise.all(input.medications.map(({ name }) => checkDrugExists(name)));
+  if (checks.includes("not_found")) redirect("/usual");
 
   return (
     <UsualScheduleView

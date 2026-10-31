@@ -1,15 +1,15 @@
 // 자료 구조 설명용 JSDoc 타입 정의. 실행 코드는 없고, 편집기에서 `import("@/types").이름`으로 가져다 쓴다.
 
 /**
- * any = 식사 무관 / after = 식후 / empty = 공복
- * @typedef {"any" | "after" | "empty"} Meal
+ * any = 식사 무관 / before = 식전 / after = 식후 / empty = 공복
+ * @typedef {"any" | "before" | "after" | "empty"} Meal
  */
 
 /**
  * 시간표 계산용 복용 규칙 (data.json / gene_data.json의 schedule)
- * @typedef {{ type: "daily", timesPerDay: number, meal: Meal, minutesAfterMeal?: number }
- *   | { type: "interval", everyHours: number, meal: Meal, minutesAfterMeal?: number }
- *   | { type: "every_n_days", everyDays: number, meal: Meal, minutesAfterMeal?: number }} Schedule
+ * @typedef {{ type: "daily", timesPerDay: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }
+ *   | { type: "interval", everyHours: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }
+ *   | { type: "every_n_days", everyDays: number, meal: Meal, minutesAfterMeal?: number, minutesBeforeMeal?: number }} Schedule
  */
 
 /**
@@ -70,6 +70,11 @@
  */
 
 /**
+ * 약 이름이 실제로 있는 약인지 확인한 결과. unchecked는 확인하지 못했다는 뜻(인증키 없음·API 오류 등)이고 막지 않는다
+ * @typedef {"found" | "not_found" | "unchecked"} DrugCheck
+ */
+
+/**
  * 평소 복용하는 약 한 가지
  * @typedef {object} Medication
  * @property {string} name
@@ -78,8 +83,18 @@
  */
 
 /**
+ * 평소 복약 입력의 생활 시간. 끼니를 거르면 그 시각이 null이다
+ * @typedef {object} MedicationLifeTimes
+ * @property {string} wakeTime
+ * @property {string} sleepTime
+ * @property {string | null} breakfast
+ * @property {string | null} lunch
+ * @property {string | null} dinner
+ */
+
+/**
  * 복용 약 입력 화면에서 받는 값
- * @typedef {LifeTimes & { medications: Medication[] }} MedicationScheduleInput
+ * @typedef {MedicationLifeTimes & { medications: Medication[] }} MedicationScheduleInput
  */
 
 /**

@@ -1,8 +1,14 @@
+import { isBlockedDrugName } from "@/lib/blockedDrugs";
 import { TIMES_PER_DAY_OPTIONS } from "@/lib/medications";
-import { DEFAULT_LIFE_TIMES } from "@/lib/time";
+import { DEFAULT_LIFE_TIMES, MEALS } from "@/lib/time";
 
 /** 페이지 사이에 넘기는 입력값. URL 쿼리 이름 = ScheduleInput 키 */
 const TIME_KEYS = ["wakeTime", "sleepTime", "breakfast", "lunch", "dinner"];
+
+/** 평소 복약 입력에서 끼니를 거르면 주소에 이 값으로 싣는다. 값이 아예 없으면 기본 시각을 쓴다 */
+const SKIPPED = "none";
+
+const MEAL_KEYS = MEALS.map(({ key }) => key);
 
 /** "HH:mm" (00:00 ~ 23:59) */
 const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
@@ -17,17 +23,21 @@ function all(value) {
   return Array.isArray(value) ? value : [value];
 }
 
-/** 생활 시간 → [이름, 값] 쌍 */
+/** 생활 시간 → [이름, 값] 쌍. 거른 끼니(null)는 "none"으로 싣는다 */
 function timeEntries(times) {
-  return TIME_KEYS.map((key) => [key, times[key]]);
+  return TIME_KEYS.map((key) => [key, times[key] ?? SKIPPED]);
 }
 
-/** 생활 시간은 빠졌거나 "HH:mm" 형식이 아니면 기본값을 쓴다 */
-export function parseLifeTimes(params) {
+/**
+ * 생활 시간은 빠졌거나 "HH:mm" 형식이 아니면 기본값을 쓴다.
+ * allowSkip이면 끼니 값이 "none"일 때 그 끼니를 거른 것(null)으로 읽는다(평소 복약 입력에서만 켠다)
+ */
+export function parseLifeTimes(params, { allowSkip = false } = {}) {
   const times = { ...DEFAULT_LIFE_TIMES };
   for (const key of TIME_KEYS) {
     const value = first(params[key]);
     if (TIME_PATTERN.test(value)) times[key] = value;
+    else if (allowSkip && value === SKIPPED && MEAL_KEYS.includes(key)) times[key] = null;
   }
   return times;
 }
@@ -53,7 +63,7 @@ export function parseQuery(params) {
   return { gene, genotype, ...parseLifeTimes(params) };
 }
 
-const MEALS = ["after", "empty", "any"];
+const MEAL_RELATIONS = ["before", "after", "empty", "any"];
 
 /** 평소 복약 입력값 → "name=아스피린&times=2&meal=after&name=…&wakeTime=07:00…". 약마다 name·times·meal이 한 벌 */
 export function toMedicationQuery(input) {
@@ -67,7 +77,7 @@ export function toMedicationQuery(input) {
   return params.toString();
 }
 
-/** 주소 → 평소 복약 입력값. 약이 없거나 한 벌이 어긋나거나 값이 틀리면 null */
+/** 주소 → 평소 복약 입력값. 약이 없거나 한 벌이 어긋나거나 값이 틀리거나 막아 둔 약이면 null */
 export function parseMedicationQuery(params) {
   const names = all(params.name);
   const counts = all(params.times);
@@ -81,10 +91,16 @@ export function parseMedicationQuery(params) {
     const name = rawName.trim();
     const timesPerDay = Number(counts[i]);
     const meal = meals[i];
-    if (name === "" || !TIMES_PER_DAY_OPTIONS.includes(timesPerDay) || !MEALS.includes(meal)) {
+    // 막아 둔 약(마약류 등)은 주소를 직접 고쳐도 시간표를 만들 수 없다
+    if (
+      name === "" ||
+      isBlockedDrugName(name) ||
+      !TIMES_PER_DAY_OPTIONS.includes(timesPerDay) ||
+      !MEAL_RELATIONS.includes(meal)
+    ) {
       return null;
     }
     medications.push({ name, timesPerDay, meal });
   }
-  return { medications, ...parseLifeTimes(params) };
+  return { medications, ...parseLifeTimes(params, { allowSkip: true }) };
 }

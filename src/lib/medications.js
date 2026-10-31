@@ -3,8 +3,11 @@ export const TIMES_PER_DAY_OPTIONS = [1, 2, 3, 4];
 
 /** 식후는 식사 30분 뒤로 본다(data.json의 식후 약과 같은 기준) */
 const AFTER_MEAL_MINUTES = 30;
+/** 식전은 식사 30분 전으로 본다 */
+const BEFORE_MEAL_MINUTES = 30;
 
 const MEAL_LABEL = {
+  before: `식전 ${BEFORE_MEAL_MINUTES}분`,
   after: `식후 ${AFTER_MEAL_MINUTES}분`,
   empty: "공복",
   any: "식사 무관",
@@ -28,6 +31,7 @@ export function medicationToDrug({ name, timesPerDay, meal }) {
       timesPerDay,
       meal,
       ...(meal === "after" ? { minutesAfterMeal: AFTER_MEAL_MINUTES } : {}),
+      ...(meal === "before" ? { minutesBeforeMeal: BEFORE_MEAL_MINUTES } : {}),
     },
   };
 }

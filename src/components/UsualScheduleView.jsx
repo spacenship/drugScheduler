@@ -16,7 +16,7 @@ const SLOT_ICONS = {
 /**
  * @param {object} props
  * @param {import("@/types").DrugInfo[]} props.drugs 입력한 약
- * @param {import("@/types").LifeTimes} props.times
+ * @param {import("@/types").MedicationLifeTimes} props.times
  * @param {string} props.backHref 입력 화면으로 돌아가 약이나 시간을 고친다
  */
 export function UsualScheduleView({ drugs, times, backHref }) {

@@ -1,7 +1,9 @@
-import { formatTime, toMinutes } from "@/lib/time";
+import { formatTime, MEALS, toMinutes } from "@/lib/time";
 
 /** 공복은 식사 1시간 전으로 본다 */
 const EMPTY_STOMACH_MINUTES = 60;
+/** 식전 약에 분이 따로 없을 때 식사 몇 분 전에 먹는지 */
+const DEFAULT_BEFORE_MEAL_MINUTES = 30;
 /** 식사 시각에 맞추는 약이 하루에 먹을 수 있는 최대 횟수(세 끼) */
 const MAX_MEAL_DOSES = 3;
 /** 식사와 상관없는 약을 하루에 나눌 때 복용 사이 최대 간격 */
@@ -64,12 +66,21 @@ export function buildSchedule(drug, input) {
   }
 
   // 1회 → 아침, 2회 → 아침·저녁, 3회 → 아침·점심·저녁
-  const meals = [
-    { label: "아침", at: toMinutes(input.breakfast) },
-    { label: "점심", at: toMinutes(input.lunch) },
-    { label: "저녁", at: toMinutes(input.dinner) },
-  ];
+  // 거른 끼니는 시각이 null이다
+  const meals = MEALS.map(({ key, label }) => ({
+    label,
+    at: input[key] == null ? null : toMinutes(input[key]),
+  }));
   const picked = n === 1 ? [meals[0]] : n === 2 ? [meals[0], meals[2]] : meals;
+
+  const skipped = picked.filter(({ at }) => at === null);
+  if (skipped.length > 0) {
+    const names = skipped.map(({ label }) => label).join(", ");
+    return {
+      status: "unschedulable",
+      reason: `${names}을 안 드셔서 식사에 맞춘 복용 시각을 정할 수 없습니다.`,
+    };
+  }
 
   const doses = picked.map(({ label, at }) => {
     if (schedule.meal === "after") {
@@ -79,11 +90,16 @@ export function buildSchedule(drug, input) {
         after === 0 ? `${label} 식사 직후` : `${label} 식사 ${formatDuration(after)} 뒤`,
       );
     }
-    const t = at - EMPTY_STOMACH_MINUTES;
+    // 식전은 식사 30분 전, 공복은 1시간 전
+    const before =
+      schedule.meal === "before"
+        ? (schedule.minutesBeforeMeal ?? DEFAULT_BEFORE_MEAL_MINUTES)
+        : EMPTY_STOMACH_MINUTES;
+    const t = at - before;
     // 기상 전이면 기상 시각으로 당긴다
     return t < wake
       ? slot(wake, `기상 직후 (${label} 식사 전)`)
-      : slot(t, `${label} 식사 ${formatDuration(EMPTY_STOMACH_MINUTES)} 전`);
+      : slot(t, `${label} 식사 ${formatDuration(before)} 전`);
   });
 
   return { status: "ok", doses };

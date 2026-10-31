@@ -1,5 +1,5 @@
 import { buildSchedule } from "@/lib/schedule";
-import { toMinutes } from "@/lib/time";
+import { MEALS, toMinutes } from "@/lib/time";
 
 /** 평소 복약 시간표의 한 번 복용 */
 
@@ -11,11 +11,16 @@ export function buildUsualSchedule(drugs, times) {
   let sleep = toMinutes(times.sleepTime);
   if (sleep <= wake) sleep += 1440; // 자정을 넘겨 자는 경우
 
+  // 거른 끼니(null)는 칸을 만들지 않는다
+  const meals = MEALS.filter(({ key }) => times[key] != null).map(({ key, label }) => ({
+    key,
+    label: `${label} 식사`,
+    time: times[key],
+    at: toMinutes(times[key]),
+  }));
   const anchors = [
     { key: "wake", label: "기상 후", time: times.wakeTime, at: wake },
-    { key: "breakfast", label: "아침 식사", time: times.breakfast, at: toMinutes(times.breakfast) },
-    { key: "lunch", label: "점심 식사", time: times.lunch, at: toMinutes(times.lunch) },
-    { key: "dinner", label: "저녁 식사", time: times.dinner, at: toMinutes(times.dinner) },
+    ...meals,
     { key: "sleep", label: "취침 전", time: times.sleepTime, at: sleep },
   ];
   const slots = anchors.map(({ key, label, time }) => ({

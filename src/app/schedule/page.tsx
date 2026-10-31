@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { DEFAULT_LIFE_TIMES } from "@/components/LifeTimeFields";
 import { ScheduleRoute } from "@/components/ScheduleRoute";
+import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import type { LifeTimes, ScheduleInput } from "@/types";
 
 export const metadata: Metadata = { title: "복약 시간표" };

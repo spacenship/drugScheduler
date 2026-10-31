@@ -21,6 +21,7 @@ type Step = "home" | "usual" | "input" | "result" | "schedule" | "nodata";
 export default function Home() {
   const [step, setStep] = useState<Step>("home");
   const [input, setInput] = useState<ScheduleInput | null>(null);
+  const [usualDrugs, setUsualDrugs] = useState<string[]>([]);
   const result = input ? lookupByGenotype(input.gene, input.genotype) : null;
   const entry = result?.status === "found" ? result.gene : null;
 
@@ -29,7 +30,13 @@ export default function Home() {
   }
 
   if (step === "usual") {
-    return <UsualScheduleView onBack={() => setStep("home")} />;
+    return (
+      <UsualScheduleView
+        selected={usualDrugs}
+        onChange={setUsualDrugs}
+        onBack={() => setStep("home")}
+      />
+    );
   }
 
   if (result?.status === "no_data" && step === "nodata") {

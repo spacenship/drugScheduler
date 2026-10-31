@@ -9,14 +9,6 @@ const TIME_FIELDS = [
   { key: "dinner", label: "저녁 식사", icon: Utensils },
 ] as const satisfies ReadonlyArray<{ key: keyof LifeTimes; label: string; icon: unknown }>;
 
-export const DEFAULT_LIFE_TIMES: LifeTimes = {
-  wakeTime: "07:00",
-  sleepTime: "23:00",
-  breakfast: "08:00",
-  lunch: "13:00",
-  dinner: "19:00",
-};
-
 interface LifeTimeFieldsProps {
   times: LifeTimes;
   onChange: (key: keyof LifeTimes, value: string) => void;

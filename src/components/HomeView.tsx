@@ -77,10 +77,10 @@ export function HomeView({ onOpenGene, onOpenUsual }: HomeViewProps) {
         />
         <Banner
           theme="gray"
-          badge="준비 중"
+          badge="평소 복약"
           title="평소 복약 시간표"
-          description="평소 먹는 약을 하루 시간표에 모아 볼 수 있어요"
-          action="틀 보기"
+          description="평소 먹는 약을 골라 하루 시간표에 모아 볼 수 있어요"
+          action="시간표 보기"
           icon={<Clock className="size-6" strokeWidth={2} aria-hidden />}
           onClick={onOpenUsual}
         />

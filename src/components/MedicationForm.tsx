@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
-import { DEFAULT_LIFE_TIMES, LifeTimeFields } from "@/components/LifeTimeFields";
+import { LifeTimeFields } from "@/components/LifeTimeFields";
+import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import type { LifeTimes, Meal, Medication, MedicationScheduleInput } from "@/types";
 
 interface MedicationFormProps {

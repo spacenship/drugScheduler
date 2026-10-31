@@ -1,3 +1,14 @@
+import type { LifeTimes } from "@/types";
+
+/** 입력하기 전에 쓰는 기본 생활 시간 */
+export const DEFAULT_LIFE_TIMES: LifeTimes = {
+  wakeTime: "07:00",
+  sleepTime: "23:00",
+  breakfast: "08:00",
+  lunch: "13:00",
+  dinner: "19:00",
+};
+
 /** "HH:mm" → 하루 0시부터의 분 */
 export function toMinutes(time: string): number {
   const [h, m] = time.split(":").map(Number);

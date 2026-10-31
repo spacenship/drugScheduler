@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { DEFAULT_LIFE_TIMES, LifeTimeFields } from "@/components/LifeTimeFields";
+import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
+import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import type { LifeTimes, ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {

@@ -1,3 +1,4 @@
+import { getDrug } from "@/lib/genes";
 import { TIMES_PER_DAY_OPTIONS } from "@/lib/medications";
 import { DEFAULT_LIFE_TIMES, MEALS } from "@/lib/time";
 
@@ -76,7 +77,7 @@ export function toMedicationQuery(input) {
   return params.toString();
 }
 
-/** 주소 → 평소 복약 입력값. 약이 없거나 한 벌이 어긋나거나 값이 틀리면 null */
+/** 주소 → 평소 복약 입력값. 약이 없거나 한 벌이 어긋나거나 값이 틀리거나 표에 없는 약이면 null */
 export function parseMedicationQuery(params) {
   const names = all(params.name);
   const counts = all(params.times);
@@ -90,8 +91,10 @@ export function parseMedicationQuery(params) {
     const name = rawName.trim();
     const timesPerDay = Number(counts[i]);
     const meal = meals[i];
+    // 약 정보 표에 없는 약은 시간표를 만들 수 없다(주소를 직접 고쳐도 마찬가지)
     if (
       name === "" ||
+      getDrug(name) === null ||
       !TIMES_PER_DAY_OPTIONS.includes(timesPerDay) ||
       !MEAL_RELATIONS.includes(meal)
     ) {

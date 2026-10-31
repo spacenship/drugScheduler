@@ -23,11 +23,21 @@ function emptyDraft(id) {
   return { id, name: "", timesPerDay: null, meal: null, touched: false };
 }
 
-/** 모두 채워졌을 때만 약 정보로 바꾼다 */
+/** 모두 채워졌고 약 이름이 약 정보 표에 있을 때만 약 정보로 바꾼다 */
 function toMedication({ name, timesPerDay, meal }) {
   const trimmed = name.trim();
-  if (!trimmed || timesPerDay === null || meal === null) return null;
+  if (!trimmed || getDrug(trimmed) === null || timesPerDay === null || meal === null) return null;
   return { name: trimmed, timesPerDay, meal };
+}
+
+/**
+ * 표에 없는 이름이면 안내를 보여 준다. 이름 칸에서 벗어난 뒤에는 바로,
+ * 입력하는 동안에는 표의 어떤 약 이름의 일부도 아닐 때만 보여 준다(쓰는 중에 깜빡이지 않게)
+ */
+function isNameNotFound({ name, touched }) {
+  const trimmed = name.trim();
+  if (trimmed === "" || getDrug(trimmed) !== null) return false;
+  return touched || !listDrugNames().some((known) => known.includes(trimmed));
 }
 
 /**
@@ -131,7 +141,7 @@ export function MedicationForm({ initial }) {
                 />
               </label>
 
-              {draft.touched && draft.name.trim() !== "" && getDrug(draft.name.trim()) === null && (
+              {isNameNotFound(draft) && (
                 <div
                   role="status"
                   className="bg-surface-muted flex flex-col items-start gap-2 rounded-md p-4"
@@ -140,8 +150,8 @@ export function MedicationForm({ initial }) {
                     찾을 수 없는 정보
                   </span>
                   <p className="text-body-md">
-                    입력한 약을 약 정보 표에서 찾을 수 없어요. 이름을 다시 확인해 주세요. 시간표는
-                    그대로 만들 수 있어요.
+                    입력한 약을 약 정보 표에서 찾을 수 없어요. 표에 있는 약만 시간표를 만들 수
+                    있으니, 이름을 다시 확인하거나 목록에서 골라 주세요.
                   </p>
                 </div>
               )}

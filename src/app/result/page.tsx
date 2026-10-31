@@ -37,7 +37,7 @@ export default function ResultPage({ searchParams }: { searchParams: SearchParam
             href="/"
             className="bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md"
           >
-            복약 시간표 만들기
+            처음으로
           </Link>
         </div>
       </main>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ChoiceChip } from "@/components/ChoiceChip";
 import { DEFAULT_LIFE_TIMES, LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
 import type { LifeTimes, ScheduleInput } from "@/types";
@@ -11,6 +10,9 @@ interface ScheduleFormProps {
   initial: ScheduleInput | null;
   onSubmit: (input: ScheduleInput) => void;
 }
+
+const TEXT_INPUT_CLASS =
+  "bg-surface-muted text-title-sm placeholder:text-ink-secondary h-14 w-full min-w-0 rounded-md px-4";
 
 export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
   const [gene, setGene] = useState(initial?.gene ?? "");
@@ -27,47 +29,58 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
       : DEFAULT_LIFE_TIMES,
   );
 
-  const genotypes = listGenotypes(gene);
-  const canSubmit = gene !== "" && genotype !== "" && Object.values(times).every(Boolean);
-
-  function selectGene(next: string) {
-    setGene(next);
-    // 유전형이 하나뿐이면 바로 고른다
-    const options = listGenotypes(next);
-    setGenotype(options.length === 1 ? options[0] : "");
-  }
+  const canSubmit =
+    gene.trim() !== "" && genotype.trim() !== "" && Object.values(times).every(Boolean);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!canSubmit) return;
-    onSubmit({ gene, genotype, ...times });
+    onSubmit({ gene: gene.trim(), genotype: genotype.trim(), ...times });
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
         <h2 className="text-title-md">유전자</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <label className="flex flex-col gap-2">
+          <span className="text-label text-ink-secondary">유전자명</span>
+          <input
+            type="text"
+            list="gene-options"
+            value={gene}
+            onChange={(e) => setGene(e.target.value)}
+            placeholder="예: CYP2D6"
+            autoComplete="off"
+            autoCapitalize="characters"
+            spellCheck={false}
+            className={TEXT_INPUT_CLASS}
+          />
+        </label>
+        <label className="flex flex-col gap-2">
+          <span className="text-label text-ink-secondary">유전형</span>
+          <input
+            type="text"
+            list="genotype-options"
+            value={genotype}
+            onChange={(e) => setGenotype(e.target.value)}
+            placeholder="예: *1/*1x2"
+            autoComplete="off"
+            spellCheck={false}
+            className={TEXT_INPUT_CLASS}
+          />
+        </label>
+        {/* 직접 입력하되, 표에 있는 값을 제안으로 보여 준다 */}
+        <datalist id="gene-options">
           {listGenes().map((name) => (
-            <ChoiceChip key={name} selected={gene === name} onClick={() => selectGene(name)}>
-              {name}
-            </ChoiceChip>
+            <option key={name} value={name} />
           ))}
-        </div>
+        </datalist>
+        <datalist id="genotype-options">
+          {listGenotypes(gene).map((name) => (
+            <option key={name} value={name} />
+          ))}
+        </datalist>
       </section>
-
-      {gene && (
-        <section className="flex flex-col gap-3">
-          <h2 className="text-title-md">유전형</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {genotypes.map((name) => (
-              <ChoiceChip key={name} selected={genotype === name} onClick={() => setGenotype(name)}>
-                {name}
-              </ChoiceChip>
-            ))}
-          </div>
-        </section>
-      )}
 
       <LifeTimeFields
         times={times}

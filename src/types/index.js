@@ -70,6 +70,11 @@
  */
 
 /**
+ * 약 이름이 실제로 있는 약인지 확인한 결과. unchecked는 확인하지 못했다는 뜻(인증키 없음·API 오류 등)이고 막지 않는다
+ * @typedef {"found" | "not_found" | "unchecked"} DrugCheck
+ */
+
+/**
  * 평소 복용하는 약 한 가지
  * @typedef {object} Medication
  * @property {string} name

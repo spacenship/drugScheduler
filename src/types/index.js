@@ -110,23 +110,14 @@
  */
 
 /**
- * 평소 복약 시간표에서 하루를 나누는 복용 시점
- * @typedef {"wake" | "breakfast" | "lunch" | "dinner" | "sleep"} SlotKey
+ * 시간표에 들어갈 약 한 번 복용
+ * @typedef {{ drug: DrugInfo, dose: DoseSlot }} TimelineDose
  */
 
 /**
- * 평소 복약 시간표의 한 번 복용
- * @typedef {{ drug: DrugInfo, dose: DoseSlot }} UsualDose
- */
-
-/**
- * 하루를 나누는 복용 시점 한 칸. time은 그 칸의 기준 생활 시각
- * @typedef {{ key: SlotKey, label: string, time: string, doses: UsualDose[] }} UsualSlot
- */
-
-/**
- * 평소 복약 시간표. unschedulable은 하루 시간표에 시각을 넣을 수 없는 약과 그 이유
- * @typedef {{ slots: UsualSlot[], unschedulable: { drug: DrugInfo, reason: string }[] }} UsualSchedule
+ * 하루 시간표 한 줄. 기상·식사·복용·취침을 같은 줄에 시각 순서로 놓는다.
+ * minutes는 하루 0시부터의 분(자정을 넘기면 1440 이상), title은 "기상"·"아침 식사"·약 이름, note는 복용 이유
+ * @typedef {{ kind: "wake" | "meal" | "dose" | "sleep", key: string, minutes: number, time: string, title: string, note?: string }} TimelineItem
  */
 
 export {};

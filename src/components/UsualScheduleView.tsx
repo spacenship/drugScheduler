@@ -1,19 +1,16 @@
+"use client";
+
+import Link from "next/link";
 import { Moon, Sun, Utensils } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
+import { useUsualDrugs } from "@/components/UsualDrugsProvider";
 import { findDrug, listDrugs } from "@/lib/drugs";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import { buildUsualSchedule, type SlotKey } from "@/lib/usualSchedule";
 import type { DrugInfo } from "@/types";
-
-interface UsualScheduleViewProps {
-  /** 고른 약 이름. 홈으로 갔다 와도 남도록 위에서 들고 있는다 */
-  selected: string[];
-  onChange: (names: string[]) => void;
-  onBack: () => void;
-}
 
 const SLOT_ICONS = {
   wake: Sun,
@@ -23,18 +20,19 @@ const SLOT_ICONS = {
   sleep: Moon,
 } satisfies Record<SlotKey, typeof Sun>;
 
-export function UsualScheduleView({ selected, onChange, onBack }: UsualScheduleViewProps) {
+export function UsualScheduleView() {
+  const { selected, setSelected } = useUsualDrugs();
   const times = DEFAULT_LIFE_TIMES;
   const drugs = selected.map(findDrug).filter((drug): drug is DrugInfo => drug !== null);
   const { slots, unschedulable } = buildUsualSchedule(drugs, times);
 
   function toggle(name: string) {
-    onChange(selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name]);
+    setSelected(selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name]);
   }
 
   return (
     <>
-      <NavBar title="평소 복약 시간표" onBack={onBack} />
+      <NavBar title="평소 복약 시간표" backHref="/" />
       <div className="flex flex-1 flex-col gap-8 px-5 pb-6">
         <div className="flex flex-col gap-1">
           <p className="text-eyebrow text-ink-secondary tabular">
@@ -133,13 +131,12 @@ export function UsualScheduleView({ selected, onChange, onBack }: UsualScheduleV
 
         <div className="mt-auto flex flex-col gap-4">
           <InfoNotice>실제 복용 시간은 의료진 지시를 따릅니다</InfoNotice>
-          <button
-            type="button"
-            onClick={onBack}
-            className="bg-primary text-on-primary text-button active:bg-primary-pressed h-14 w-full rounded-md"
+          <Link
+            href="/"
+            className="bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md"
           >
             홈으로
-          </button>
+          </Link>
         </div>
       </div>
     </>

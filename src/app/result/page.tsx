@@ -1,71 +1,38 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { InfoNotice } from "@/components/InfoNotice";
-import { NavBar } from "@/components/NavBar";
-import { ResultDetails } from "@/components/ResultDetails";
+import { redirect } from "next/navigation";
+import { NoDataView } from "@/components/NoDataView";
+import { ResultView } from "@/components/ResultView";
 import { lookupByGenotype } from "@/lib/genes";
+import { parseQuery, toQuery } from "@/lib/query";
 
 export const metadata: Metadata = { title: "결과" };
 
-type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
-function first(value: string | string[] | undefined): string {
-  return (Array.isArray(value) ? value[0] : value) ?? "";
-}
-
-const PRIMARY_LINK =
-  "bg-primary text-on-primary text-button active:bg-primary-pressed flex h-14 w-full items-center justify-center rounded-md";
-
-/** /result?gene=CYP2D6&genotype=*1/*1x2 처럼 유전자와 유전형을 받아 결과를 보여 준다 */
-async function Result({ searchParams }: { searchParams: SearchParams }) {
-  const params = await searchParams;
-  const gene = first(params.gene);
-  const genotype = first(params.genotype);
-  const result = lookupByGenotype(gene, genotype);
-  // 시간표 화면(/schedule)에 유전자·유전형을 주소로 넘겨 준다
-  const scheduleHref = `/schedule?${new URLSearchParams({ gene, genotype })}`;
-
+/**
+ * 화면 2: 유전형에 맞는 추천 약 결과 카드. 입력값은 URL 쿼리로 받는다.
+ * /result?gene=CYP2D6&genotype=*1/*1x2 처럼 유전자와 유전형만 있어도 열린다.
+ */
+export default function ResultPage(props: PageProps<"/result">) {
   return (
-    <>
-      <ResultDetails result={result} />
-
-      <div className="mt-auto flex flex-col gap-4">
-        <InfoNotice>실제 복용은 의료진과 상의하세요</InfoNotice>
-        {result.status === "found" ? (
-          <>
-            <Link href={scheduleHref} className={PRIMARY_LINK}>
-              시간표 보기
-            </Link>
-            <Link
-              href="/"
-              className="text-primary text-button flex h-12 w-full items-center justify-center"
-            >
-              처음으로
-            </Link>
-          </>
-        ) : (
-          // 자료가 없으면 시간표를 만들 수 없으므로 처음으로만 둔다
-          <Link href="/" className={PRIMARY_LINK}>
-            처음으로
-          </Link>
-        )}
-      </div>
-    </>
+    <Suspense
+      fallback={<p className="text-body-md text-ink-secondary px-5 py-6">결과를 찾는 중입니다</p>}
+    >
+      <Result searchParams={props.searchParams} />
+    </Suspense>
   );
 }
 
-export default function ResultPage({ searchParams }: { searchParams: SearchParams }) {
-  return (
-    <>
-      <NavBar title="결과" backHref="/" />
-      <main className="flex flex-1 flex-col gap-8 px-5 pb-6">
-        <Suspense
-          fallback={<p className="text-body-md text-ink-secondary">결과를 찾는 중입니다</p>}
-        >
-          <Result searchParams={searchParams} />
-        </Suspense>
-      </main>
-    </>
-  );
+async function Result({ searchParams }: Pick<PageProps<"/result">, "searchParams">) {
+  const input = parseQuery(await searchParams);
+  if (!input) redirect("/gene");
+
+  const result = lookupByGenotype(input.gene, input.genotype);
+  if (result.status === "no_data") {
+    // 입력했던 값이 남은 채 입력 화면으로 돌아간다
+    return <NoDataView result={result} retryHref={`/gene?${toQuery(input)}`} />;
+  }
+
+  // 표에 적힌 원래 글자로 바꿔 넘긴다(예: cyp2d6 → CYP2D6)
+  const query = toQuery({ ...input, gene: result.gene.gene, genotype: result.gene.genotype });
+  return <ResultView result={result} backHref={`/gene?${query}`} nextHref={`/schedule?${query}`} />;
 }

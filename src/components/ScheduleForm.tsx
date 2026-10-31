@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
+import { toQuery } from "@/lib/query";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import type { LifeTimes, ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {
   /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
   initial: ScheduleInput | null;
-  onSubmit: (input: ScheduleInput) => void;
 }
 
 const TEXT_INPUT_CLASS =
   "bg-surface-muted text-title-sm placeholder:text-ink-secondary h-14 w-full min-w-0 rounded-md px-4";
 
-export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
+export function ScheduleForm({ initial }: ScheduleFormProps) {
+  const router = useRouter();
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
   const [times, setTimes] = useState<LifeTimes>(
@@ -30,13 +32,26 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
       : DEFAULT_LIFE_TIMES,
   );
 
+  // 새 입력(주소에 값이 없을 때)은 화면을 떠날 때 비워서, 처음부터 다시 시작하면 빈 칸으로 열리게 한다.
+  // Cache Components가 떠난 페이지를 숨겨 두기만 해서 입력값이 그대로 남기 때문이다.
+  // 결과에서 돌아온 입력은 주소의 값으로 채우므로 비우지 않는다.
+  const isNew = initial === null;
+  useLayoutEffect(() => {
+    if (!isNew) return;
+    return () => {
+      setGene("");
+      setGenotype("");
+      setTimes(DEFAULT_LIFE_TIMES);
+    };
+  }, [isNew]);
+
   const canSubmit =
     gene.trim() !== "" && genotype.trim() !== "" && Object.values(times).every(Boolean);
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!canSubmit) return;
-    onSubmit({ gene: gene.trim(), genotype: genotype.trim(), ...times });
+    router.push(`/result?${toQuery({ gene: gene.trim(), genotype: genotype.trim(), ...times })}`);
   }
 
   return (

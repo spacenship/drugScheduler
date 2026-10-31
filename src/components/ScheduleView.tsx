@@ -1,7 +1,7 @@
 import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
-import { buildSchedule } from "@/lib/schedule";
+import { scheduleByGenotype } from "@/lib/schedule";
 import type { GeneEntry, ScheduleInput } from "@/types";
 
 interface ScheduleViewProps {
@@ -12,7 +12,7 @@ interface ScheduleViewProps {
 }
 
 export function ScheduleView({ input, entry, onBack, onRestart }: ScheduleViewProps) {
-  const result = entry ? buildSchedule(entry, input) : null;
+  const result = scheduleByGenotype(input.gene, input.genotype, input);
 
   const lifeTimes = [
     { label: "기상", time: input.wakeTime },

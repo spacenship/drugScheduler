@@ -1,12 +1,12 @@
 import { buildSchedule } from "@/lib/schedule";
 import { toMinutes } from "@/lib/time";
-import type { DoseSlot, DrugInfo, LifeTimes } from "@/types";
+import type { DoseSlot, LifeTimes, ScheduledDrug } from "@/types";
 
 export type SlotKey = "wake" | "breakfast" | "lunch" | "dinner" | "sleep";
 
 /** 평소 복약 시간표의 한 번 복용 */
 export interface UsualDose {
-  drug: DrugInfo;
+  drug: ScheduledDrug;
   dose: DoseSlot;
 }
 
@@ -21,11 +21,11 @@ export interface UsualSlot {
 export interface UsualSchedule {
   slots: UsualSlot[];
   /** 하루 시간표에 시각을 넣을 수 없는 약과 그 이유 */
-  unschedulable: { drug: DrugInfo; reason: string }[];
+  unschedulable: { drug: ScheduledDrug; reason: string }[];
 }
 
 /** 고른 약들의 복용 시각을 계산해, 가장 가까운 생활 시각 칸에 나누어 담는다 */
-export function buildUsualSchedule(drugs: DrugInfo[], times: LifeTimes): UsualSchedule {
+export function buildUsualSchedule(drugs: ScheduledDrug[], times: LifeTimes): UsualSchedule {
   const wake = toMinutes(times.wakeTime);
   let sleep = toMinutes(times.sleepTime);
   if (sleep <= wake) sleep += 1440; // 자정을 넘겨 자는 경우

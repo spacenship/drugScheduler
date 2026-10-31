@@ -18,6 +18,9 @@ export interface DrugInfo {
   schedule: Schedule;
 }
 
+/** 시간표에 넣을 약: 이름과 복용 규칙만 있으면 된다(표의 약 또는 직접 입력한 약) */
+export type ScheduledDrug = Pick<DrugInfo, "drugName" | "schedule">;
+
 /** data/gene_data.json의 genes[유전자][유전형] 한 건 */
 export interface GeneEntry extends DrugInfo {
   gene: string;

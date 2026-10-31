@@ -1,8 +1,18 @@
+import { findGeneEntry } from "@/lib/genes";
 import { formatTime, toMinutes } from "@/lib/time";
-import type { DoseSlot, LifeTimes, Schedule, ScheduleResult } from "@/types";
+import type {
+  DoseSlot,
+  LifeTimes,
+  Medication,
+  Schedule,
+  ScheduledDrug,
+  ScheduleResult,
+} from "@/types";
 
 /** 공복은 식사 1시간 전으로 본다 */
 const EMPTY_STOMACH_MINUTES = 60;
+/** 평소 복용약의 '식후'는 식사 30분 뒤로 본다(표의 '식후 30분'과 같은 기준) */
+const USUAL_MINUTES_AFTER_MEAL = 30;
 /** 식사 시각에 맞추는 약이 하루에 먹을 수 있는 최대 횟수(세 끼) */
 const MAX_MEAL_DOSES = 3;
 /** 식사와 상관없는 약을 하루에 나눌 때 복용 사이 최대 간격 */
@@ -88,4 +98,29 @@ export function buildSchedule(drug: { schedule: Schedule }, input: LifeTimes): S
   });
 
   return { status: "ok", doses };
+}
+
+/*
+ * 시간표 계산 함수(buildSchedule)는 하나이고, 넣는 값(schedule)만 다르다.
+ * - 유전자형별: gene_data.json에서 유전형으로 찾은 약의 schedule
+ * - 평소 복용약: 직접 입력한 하루 횟수·식사 관계로 만든 schedule
+ */
+
+/** 유전자형별 시간표: 표에서 유전자·유전형으로 약을 찾아 그 복용 규칙을 넣는다. 못 찾으면 null */
+export function scheduleByGenotype(
+  gene: string,
+  genotype: string,
+  times: LifeTimes,
+): ScheduleResult | null {
+  const entry = findGeneEntry(gene, genotype);
+  return entry ? buildSchedule(entry, times) : null;
+}
+
+/** 평소 복용약 한 가지 → 시간표에 넣을 약. 입력한 하루 횟수·식사 관계로 복용 규칙을 만든다 */
+export function medicationToDrug({ name, timesPerDay, meal }: Medication): ScheduledDrug {
+  const schedule: Schedule =
+    meal === "after"
+      ? { type: "daily", timesPerDay, meal, minutesAfterMeal: USUAL_MINUTES_AFTER_MEAL }
+      : { type: "daily", timesPerDay, meal };
+  return { drugName: name, schedule };
 }

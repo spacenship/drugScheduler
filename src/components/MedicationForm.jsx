@@ -6,6 +6,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { WarningNotice } from "@/components/WarningNotice";
+import { isBlockedDrugName } from "@/lib/blockedDrugs";
 import { getDrug, listDrugNames } from "@/lib/genes";
 import { TIMES_PER_DAY_OPTIONS } from "@/lib/medications";
 import { toMedicationQuery } from "@/lib/query";
@@ -30,13 +31,19 @@ function toMedication({ name, timesPerDay, meal }) {
   return { name: trimmed, timesPerDay, meal };
 }
 
+/** 표에 없고, 마약류·오남용 위험으로 막아 둔 이름인지 */
+function isNameBlocked({ name }) {
+  const trimmed = name.trim();
+  return getDrug(trimmed) === null && isBlockedDrugName(trimmed);
+}
+
 /**
- * 표에 없는 이름이면 안내를 보여 준다. 이름 칸에서 벗어난 뒤에는 바로,
+ * 표에 없는 이름이면 안내를 보여 준다(막아 둔 약은 따로 안내하므로 제외). 이름 칸에서 벗어난 뒤에는 바로,
  * 입력하는 동안에는 표의 어떤 약 이름의 일부도 아닐 때만 보여 준다(쓰는 중에 깜빡이지 않게)
  */
 function isNameNotFound({ name, touched }) {
   const trimmed = name.trim();
-  if (trimmed === "" || getDrug(trimmed) !== null) return false;
+  if (trimmed === "" || getDrug(trimmed) !== null || isNameBlocked({ name })) return false;
   return touched || !listDrugNames().some((known) => known.includes(trimmed));
 }
 
@@ -140,6 +147,13 @@ export function MedicationForm({ initial }) {
                   className="bg-surface-muted text-body-lg placeholder:text-ink-secondary h-14 rounded-md px-4"
                 />
               </label>
+
+              {isNameBlocked(draft) && (
+                <WarningNotice>
+                  이 약은 입력할 수 없어요. 마약류나 오남용 위험이 있는 약은 시간표를 만들 수
+                  없어요. 처방받은 약이라면 의료진·약사와 상의하세요.
+                </WarningNotice>
+              )}
 
               {isNameNotFound(draft) && (
                 <div

@@ -1,18 +1,17 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ScheduleView } from "@/components/ScheduleView";
 import { findGeneEntry } from "@/lib/genes";
 import { parseQuery, toQuery } from "@/lib/query";
 
-export const metadata: Metadata = { title: "복약 시간표" };
+export const metadata = { title: "복약 시간표" };
 
 /**
  * 화면 3: 복용 시각과 식사 시간을 하루 시간표로 보여 준다. 입력값은 URL 쿼리로 받는다.
  * wakeTime, sleepTime, breakfast, lunch, dinner를 "HH:mm"으로 덧붙이면 생활 시간을 바꿀 수 있고,
  * 빠졌거나 형식이 틀리면 기본값을 쓴다.
  */
-export default function SchedulePage(props: PageProps<"/schedule">) {
+export default function SchedulePage(props) {
   return (
     <Suspense
       fallback={
@@ -24,7 +23,7 @@ export default function SchedulePage(props: PageProps<"/schedule">) {
   );
 }
 
-async function Schedule({ searchParams }: Pick<PageProps<"/schedule">, "searchParams">) {
+async function Schedule({ searchParams }) {
   const input = parseQuery(await searchParams);
   if (!input) redirect("/gene");
 

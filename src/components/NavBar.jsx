@@ -1,12 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
-interface NavBarProps {
-  title: string;
-  backHref: string;
-}
-
-export function NavBar({ title, backHref }: NavBarProps) {
+export function NavBar({ title, backHref }) {
   return (
     <header className="text-title-sm relative flex h-14 items-center justify-center">
       <Link

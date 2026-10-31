@@ -1,5 +1,4 @@
 import { Moon, Sun, Utensils } from "lucide-react";
-import type { LifeTimes } from "@/types";
 
 const TIME_FIELDS = [
   { key: "wakeTime", label: "기상", icon: Sun },
@@ -7,15 +6,10 @@ const TIME_FIELDS = [
   { key: "breakfast", label: "아침 식사", icon: Utensils },
   { key: "lunch", label: "점심 식사", icon: Utensils },
   { key: "dinner", label: "저녁 식사", icon: Utensils },
-] as const satisfies ReadonlyArray<{ key: keyof LifeTimes; label: string; icon: unknown }>;
-
-interface LifeTimeFieldsProps {
-  times: LifeTimes;
-  onChange: (key: keyof LifeTimes, value: string) => void;
-}
+];
 
 /** 기상·취침·식사 시각을 받는 입력 구역 */
-export function LifeTimeFields({ times, onChange }: LifeTimeFieldsProps) {
+export function LifeTimeFields({ times, onChange }) {
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-title-md">생활 시간</h2>

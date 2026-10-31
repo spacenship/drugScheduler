@@ -1,5 +1,4 @@
 import { formatTime, toMinutes } from "@/lib/time";
-import type { DoseSlot, LifeTimes, Schedule, ScheduleResult } from "@/types";
 
 /** 공복은 식사 1시간 전으로 본다 */
 const EMPTY_STOMACH_MINUTES = 60;
@@ -8,12 +7,12 @@ const MAX_MEAL_DOSES = 3;
 /** 식사와 상관없는 약을 하루에 나눌 때 복용 사이 최대 간격 */
 const MAX_GAP_MINUTES = 12 * 60;
 
-function slot(minutes: number, note: string): DoseSlot {
+function slot(minutes, note) {
   return { minutes, time: formatTime(minutes), note };
 }
 
 /** 몇 분 → "30분" / "1시간" / "1시간 30분" */
-function formatDuration(minutes: number): string {
+function formatDuration(minutes) {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   if (h === 0) return `${m}분`;
@@ -21,7 +20,7 @@ function formatDuration(minutes: number): string {
 }
 
 /** 입력한 생활 시간과 약의 복용 규칙(schedule)으로 하루 시간표를 계산한다 */
-export function buildSchedule(drug: { schedule: Schedule }, input: LifeTimes): ScheduleResult {
+export function buildSchedule(drug, input) {
   const { schedule } = drug;
 
   if (schedule.type === "every_n_days") {
@@ -37,7 +36,7 @@ export function buildSchedule(drug: { schedule: Schedule }, input: LifeTimes): S
 
   if (schedule.type === "interval") {
     const step = schedule.everyHours * 60;
-    const doses: DoseSlot[] = [];
+    const doses = [];
     for (let t = wake; t <= sleep; t += step) {
       doses.push(
         slot(t, doses.length === 0 ? "기상 후 첫 복용" : `${schedule.everyHours}시간 간격`),

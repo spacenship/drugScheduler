@@ -1,7 +1,6 @@
 import { Pill, TriangleAlert } from "lucide-react";
-import type { LookupResult, NoDataResult } from "@/types";
 
-function InfoRow({ name, value }: { name: string; value: string }) {
+function InfoRow({ name, value }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
       <span className="text-label text-ink-secondary shrink-0">{name}</span>
@@ -11,7 +10,7 @@ function InfoRow({ name, value }: { name: string; value: string }) {
 }
 
 /** 못 찾은 이유에 맞는 제목. 입력이 비어 있으면 이유를 말하지 않고 일반 문구를 쓴다 */
-function noDataTitle({ reason, query }: NoDataResult): string {
+function noDataTitle({ reason, query }) {
   if (reason === "unknown_gene" && query.gene !== "") {
     return `${query.gene} 유전자에 대한 정보가 부족합니다`;
   }
@@ -21,7 +20,7 @@ function noDataTitle({ reason, query }: NoDataResult): string {
   return "추천할 약을 판단할 자료가 없습니다";
 }
 
-function NoData({ result }: { result: NoDataResult }) {
+function NoData({ result }) {
   const hasSuggestions = result.suggestions.length > 0;
   return (
     <>
@@ -58,7 +57,7 @@ function NoData({ result }: { result: NoDataResult }) {
 }
 
 /** 유전자·유전형 조회 결과: 추천 약, 복용 정보, 주의, 근거. 자료가 없으면 회색 카드 */
-export function ResultDetails({ result }: { result: LookupResult }) {
+export function ResultDetails({ result }) {
   if (result.status === "no_data") {
     return <NoData result={result} />;
   }

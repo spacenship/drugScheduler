@@ -5,7 +5,7 @@
 ## 기술 스택
 
 - [Next.js](https://nextjs.org) 16 (App Router)
-- React 19, TypeScript
+- React 19, JavaScript
 - Tailwind CSS v4
 - ESLint + Prettier
 
@@ -30,7 +30,6 @@ npm run dev
 | `npm run start`                   | 빌드 결과 실행            |
 | `npm run lint` / `lint:fix`       | ESLint 검사 / 자동 수정   |
 | `npm run format` / `format:check` | Prettier 포맷 적용 / 검사 |
-| `npm run typecheck`               | TypeScript 타입 검사      |
 
 ## 데이터
 

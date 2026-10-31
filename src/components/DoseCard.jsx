@@ -1,13 +1,7 @@
 import { Pill } from "lucide-react";
 
-interface DoseCardProps {
-  time: string;
-  drugName: string;
-  note: string;
-}
-
 /** 복용 시각 한 번을 보여 주는 약 카드(초록 테마) */
-export function DoseCard({ time, drugName, note }: DoseCardProps) {
+export function DoseCard({ time, drugName, note }) {
   return (
     <div className="bg-green-soft flex items-end justify-between gap-3 rounded-lg p-5">
       <div className="flex flex-col gap-1">

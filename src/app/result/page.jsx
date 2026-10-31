@@ -1,18 +1,17 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { NoDataView } from "@/components/NoDataView";
 import { ResultView } from "@/components/ResultView";
 import { lookupByGenotype } from "@/lib/genes";
 import { parseQuery, toQuery } from "@/lib/query";
 
-export const metadata: Metadata = { title: "결과" };
+export const metadata = { title: "결과" };
 
 /**
  * 화면 2: 유전형에 맞는 추천 약 결과 카드. 입력값은 URL 쿼리로 받는다.
  * /result?gene=CYP2D6&genotype=*1/*1x2 처럼 유전자와 유전형만 있어도 열린다.
  */
-export default function ResultPage(props: PageProps<"/result">) {
+export default function ResultPage(props) {
   return (
     <Suspense
       fallback={<p className="text-body-md text-ink-secondary px-5 py-6">결과를 찾는 중입니다</p>}
@@ -22,7 +21,7 @@ export default function ResultPage(props: PageProps<"/result">) {
   );
 }
 
-async function Result({ searchParams }: Pick<PageProps<"/result">, "searchParams">) {
+async function Result({ searchParams }) {
   const input = parseQuery(await searchParams);
   if (!input) redirect("/gene");
 

@@ -1,13 +1,7 @@
 import { cn } from "@/lib/utils";
 
-interface ChoiceChipProps {
-  selected: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}
-
 /** 선택지 칩. 고르면 파란 바탕으로 바뀌고, 글자가 길면 두 줄로 늘어난다 */
-export function ChoiceChip({ selected, onClick, children }: ChoiceChipProps) {
+export function ChoiceChip({ selected, onClick, children }) {
   return (
     <button
       type="button"

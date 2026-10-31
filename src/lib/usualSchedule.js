@@ -1,49 +1,30 @@
 import { buildSchedule } from "@/lib/schedule";
 import { toMinutes } from "@/lib/time";
-import type { DoseSlot, DrugInfo, LifeTimes } from "@/types";
-
-export type SlotKey = "wake" | "breakfast" | "lunch" | "dinner" | "sleep";
 
 /** 평소 복약 시간표의 한 번 복용 */
-export interface UsualDose {
-  drug: DrugInfo;
-  dose: DoseSlot;
-}
 
 /** 하루를 나누는 복용 시점 한 칸. time은 그 칸의 기준 생활 시각 */
-export interface UsualSlot {
-  key: SlotKey;
-  label: string;
-  time: string;
-  doses: UsualDose[];
-}
-
-export interface UsualSchedule {
-  slots: UsualSlot[];
-  /** 하루 시간표에 시각을 넣을 수 없는 약과 그 이유 */
-  unschedulable: { drug: DrugInfo; reason: string }[];
-}
 
 /** 고른 약들의 복용 시각을 계산해, 가장 가까운 생활 시각 칸에 나누어 담는다 */
-export function buildUsualSchedule(drugs: DrugInfo[], times: LifeTimes): UsualSchedule {
+export function buildUsualSchedule(drugs, times) {
   const wake = toMinutes(times.wakeTime);
   let sleep = toMinutes(times.sleepTime);
   if (sleep <= wake) sleep += 1440; // 자정을 넘겨 자는 경우
 
-  const anchors: { key: SlotKey; label: string; time: string; at: number }[] = [
+  const anchors = [
     { key: "wake", label: "기상 후", time: times.wakeTime, at: wake },
     { key: "breakfast", label: "아침 식사", time: times.breakfast, at: toMinutes(times.breakfast) },
     { key: "lunch", label: "점심 식사", time: times.lunch, at: toMinutes(times.lunch) },
     { key: "dinner", label: "저녁 식사", time: times.dinner, at: toMinutes(times.dinner) },
     { key: "sleep", label: "취침 전", time: times.sleepTime, at: sleep },
   ];
-  const slots: UsualSlot[] = anchors.map(({ key, label, time }) => ({
+  const slots = anchors.map(({ key, label, time }) => ({
     key,
     label,
     time,
     doses: [],
   }));
-  const unschedulable: UsualSchedule["unschedulable"] = [];
+  const unschedulable = [];
 
   for (const drug of drugs) {
     const result = buildSchedule(drug, times);

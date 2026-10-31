@@ -2,23 +2,13 @@ import Link from "next/link";
 import { ChevronRight, Clock, Dna } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
 
-interface BannerProps {
-  theme: "green" | "gray";
-  badge: string;
-  title: string;
-  description: string;
-  action: string;
-  icon: React.ReactNode;
-  href: string;
-}
-
 const THEME = {
   green: { card: "bg-green-soft", badge: "bg-green-strong", tile: "bg-green-strong" },
   gray: { card: "bg-surface-muted", badge: "bg-ink-secondary", tile: "bg-ink-secondary" },
-} as const;
+};
 
 /** 홈의 배너. 카드 전체가 하나의 링크라 안쪽에는 span만 쓴다 */
-function Banner({ theme, badge, title, description, action, icon, href }: BannerProps) {
+function Banner({ theme, badge, title, description, action, icon, href }) {
   const color = THEME[theme];
 
   return (

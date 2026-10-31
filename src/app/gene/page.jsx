@@ -1,14 +1,13 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { ScheduleForm } from "@/components/ScheduleForm";
 import { parseQuery, toQuery } from "@/lib/query";
 
-export const metadata: Metadata = { title: "유전자 복약 시간표" };
+export const metadata = { title: "유전자 복약 시간표" };
 
 /** 화면 1: 유전자 정보와 생활 시간 입력. 결과에서 돌아오면 쿼리로 앞서 입력한 값을 채운다 */
-export default function GenePage(props: PageProps<"/gene">) {
+export default function GenePage(props) {
   return (
     <>
       <NavBar title="유전자 복약 시간표" backHref="/" />
@@ -28,7 +27,7 @@ export default function GenePage(props: PageProps<"/gene">) {
   );
 }
 
-async function FormWithQuery({ searchParams }: Pick<PageProps<"/gene">, "searchParams">) {
+async function FormWithQuery({ searchParams }) {
   const initial = parseQuery(await searchParams);
   // 주소의 값이 바뀌면 폼을 새로 만들어, 보관된 이전 입력 대신 주소의 값으로 채운다
   return <ScheduleForm key={initial ? toQuery(initial) : "new"} initial={initial} />;

@@ -6,21 +6,15 @@ import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { listGenes, listGenotypes } from "@/lib/genes";
 import { toQuery } from "@/lib/query";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
-import type { LifeTimes, ScheduleInput } from "@/types";
-
-interface ScheduleFormProps {
-  /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
-  initial: ScheduleInput | null;
-}
 
 const TEXT_INPUT_CLASS =
   "bg-surface-muted text-title-sm placeholder:text-ink-secondary h-14 w-full min-w-0 rounded-md px-4";
 
-export function ScheduleForm({ initial }: ScheduleFormProps) {
+export function ScheduleForm({ initial }) {
   const router = useRouter();
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
-  const [times, setTimes] = useState<LifeTimes>(
+  const [times, setTimes] = useState(
     initial
       ? {
           wakeTime: initial.wakeTime,
@@ -48,7 +42,7 @@ export function ScheduleForm({ initial }: ScheduleFormProps) {
   const canSubmit =
     gene.trim() !== "" && genotype.trim() !== "" && Object.values(times).every(Boolean);
 
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event) {
     event.preventDefault();
     if (!canSubmit) return;
     router.push(`/result?${toQuery({ gene: gene.trim(), genotype: genotype.trim(), ...times })}`);

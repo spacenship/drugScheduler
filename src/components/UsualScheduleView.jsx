@@ -9,8 +9,7 @@ import { NavBar } from "@/components/NavBar";
 import { useUsualDrugs } from "@/components/UsualDrugsProvider";
 import { findDrug, listDrugs } from "@/lib/drugs";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
-import { buildUsualSchedule, type SlotKey } from "@/lib/usualSchedule";
-import type { DrugInfo } from "@/types";
+import { buildUsualSchedule } from "@/lib/usualSchedule";
 
 const SLOT_ICONS = {
   wake: Sun,
@@ -18,15 +17,15 @@ const SLOT_ICONS = {
   lunch: Utensils,
   dinner: Utensils,
   sleep: Moon,
-} satisfies Record<SlotKey, typeof Sun>;
+};
 
 export function UsualScheduleView() {
   const { selected, setSelected } = useUsualDrugs();
   const times = DEFAULT_LIFE_TIMES;
-  const drugs = selected.map(findDrug).filter((drug): drug is DrugInfo => drug !== null);
+  const drugs = selected.map(findDrug).filter((drug) => drug !== null);
   const { slots, unschedulable } = buildUsualSchedule(drugs, times);
 
-  function toggle(name: string) {
+  function toggle(name) {
     setSelected(selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name]);
   }
 

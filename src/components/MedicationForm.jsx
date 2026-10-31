@@ -5,46 +5,35 @@ import { Plus, Trash2 } from "lucide-react";
 import { ChoiceChip } from "@/components/ChoiceChip";
 import { LifeTimeFields } from "@/components/LifeTimeFields";
 import { DEFAULT_LIFE_TIMES } from "@/lib/time";
-import type { LifeTimes, Meal, Medication, MedicationScheduleInput } from "@/types";
-
-interface MedicationFormProps {
-  onSubmit: (input: MedicationScheduleInput) => void;
-}
 
 /** 입력 중인 약. 복용 횟수와 식사 관계는 고르기 전까지 null */
-interface MedicationDraft {
-  id: number;
-  name: string;
-  timesPerDay: number | null;
-  meal: Meal | null;
-}
 
 const TIMES_PER_DAY_OPTIONS = [1, 2, 3, 4];
 
-const MEAL_OPTIONS: Array<{ value: Meal; label: string }> = [
+const MEAL_OPTIONS = [
   { value: "after", label: "식후" },
   { value: "empty", label: "공복" },
   { value: "any", label: "상관없음" },
 ];
 
-function emptyDraft(id: number): MedicationDraft {
+function emptyDraft(id) {
   return { id, name: "", timesPerDay: null, meal: null };
 }
 
 /** 모두 채워졌을 때만 약 정보로 바꾼다 */
-function toMedication({ name, timesPerDay, meal }: MedicationDraft): Medication | null {
+function toMedication({ name, timesPerDay, meal }) {
   const trimmed = name.trim();
   if (!trimmed || timesPerDay === null || meal === null) return null;
   return { name: trimmed, timesPerDay, meal };
 }
 
-export function MedicationForm({ onSubmit }: MedicationFormProps) {
-  const [drafts, setDrafts] = useState<MedicationDraft[]>([emptyDraft(0)]);
-  const [times, setTimes] = useState<LifeTimes>(DEFAULT_LIFE_TIMES);
+export function MedicationForm({ onSubmit }) {
+  const [drafts, setDrafts] = useState([emptyDraft(0)]);
+  const [times, setTimes] = useState(DEFAULT_LIFE_TIMES);
 
   const canSubmit = drafts.every((draft) => toMedication(draft) !== null);
 
-  function updateDraft(id: number, patch: Partial<MedicationDraft>) {
+  function updateDraft(id, patch) {
     setDrafts((prev) => prev.map((draft) => (draft.id === id ? { ...draft, ...patch } : draft)));
   }
 
@@ -52,11 +41,11 @@ export function MedicationForm({ onSubmit }: MedicationFormProps) {
     setDrafts((prev) => [...prev, emptyDraft(Math.max(...prev.map((draft) => draft.id)) + 1)]);
   }
 
-  function removeDraft(id: number) {
+  function removeDraft(id) {
     setDrafts((prev) => prev.filter((draft) => draft.id !== id));
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event) {
     event.preventDefault();
     const medications = drafts.map(toMedication).filter((med) => med !== null);
     if (medications.length !== drafts.length) return;

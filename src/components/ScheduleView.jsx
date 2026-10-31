@@ -3,16 +3,8 @@ import { DoseCard } from "@/components/DoseCard";
 import { InfoNotice } from "@/components/InfoNotice";
 import { NavBar } from "@/components/NavBar";
 import { buildSchedule } from "@/lib/schedule";
-import type { GeneEntry, ScheduleInput } from "@/types";
 
-interface ScheduleViewProps {
-  input: ScheduleInput;
-  entry: GeneEntry | null;
-  backHref: string;
-  restartHref: string;
-}
-
-export function ScheduleView({ input, entry, backHref, restartHref }: ScheduleViewProps) {
+export function ScheduleView({ input, entry, backHref, restartHref }) {
   const result = entry ? buildSchedule(entry, input) : null;
 
   const lifeTimes = [

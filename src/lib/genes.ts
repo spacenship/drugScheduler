@@ -1,4 +1,4 @@
-import geneData from "../../gene_data.json";
+import geneData from "../../data/gene_data.json";
 import type { GeneEntry } from "@/types";
 
 const genes = geneData.genes as unknown as Record<string, Record<string, GeneEntry>>;

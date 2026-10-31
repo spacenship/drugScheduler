@@ -34,8 +34,8 @@ npm run dev
 
 ## 데이터
 
-- `gene_data.json`: 유전자·유전형별 추천 약 정보 (화면에서 사용)
-- `data.json`: 약 이름별 기본 정보
+- `data/gene_data.json`: 유전자·유전형별 추천 약 정보 (화면에서 사용)
+- `data/data.json`: 약 이름별 기본 정보
 - 원본 스프레드시트: https://docs.google.com/spreadsheets/d/1YXlD9tuJ4D9_5fPkGXwUFmIQOArXgbm5vFJ2rTI16nQ/edit?gid=0#gid=0
 
 ## 디자인
@@ -50,5 +50,6 @@ src/
   components/  # 공용 UI 컴포넌트
   lib/         # 유틸리티 함수
   types/       # 공용 타입 정의
+data/          # 약·유전형 데이터 (JSON)
 public/        # 정적 파일
 ```

@@ -15,6 +15,10 @@ colors:
   green-strong: "#3F7A16"
   orange-soft: "#FDEBE4"
   orange-strong: "#C2410C"
+  purple-soft: "#F1EAFB"
+  purple-strong: "#6B3FA0"
+  teal-soft: "#E0F2F1"
+  teal-strong: "#0F766E"
   warning: "#C62828"
   warning-soft: "#FDECEC"
   backdrop-top: "#D4E5B9"
@@ -144,6 +148,20 @@ components:
     rounded: "{rounded.sm}"
     height: 28px
     padding: 0 10px
+  badge-purple:
+    backgroundColor: "{colors.purple-strong}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.badge}"
+    rounded: "{rounded.sm}"
+    height: 28px
+    padding: 0 10px
+  badge-teal:
+    backgroundColor: "{colors.teal-strong}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.badge}"
+    rounded: "{rounded.sm}"
+    height: 28px
+    padding: 0 10px
   badge-gray:
     backgroundColor: "{colors.ink-secondary}"
     textColor: "{colors.on-primary}"
@@ -161,6 +179,16 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.lg}"
     padding: 20px
+  med-card-purple:
+    backgroundColor: "{colors.purple-soft}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: 20px
+  med-card-teal:
+    backgroundColor: "{colors.teal-soft}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: 20px
   med-card-empty:
     backgroundColor: "{colors.surface-muted}"
     textColor: "{colors.ink}"
@@ -173,6 +201,16 @@ components:
     size: 48px
   icon-tile-orange:
     backgroundColor: "{colors.orange-strong}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+    size: 48px
+  icon-tile-purple:
+    backgroundColor: "{colors.purple-strong}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+    size: 48px
+  icon-tile-teal:
+    backgroundColor: "{colors.teal-strong}"
     textColor: "{colors.on-primary}"
     rounded: "{rounded.md}"
     size: 48px
@@ -234,21 +272,21 @@ components:
 
 ## Overview
 
-깨끗하고 밝은 의료 앱. 흰 바탕에 파란 주 버튼 하나, 약마다 연한 색 카드(초록·주황)로 구분하고, 그림자 없이 배경색 차이로 층을 나눈다. 글자 굵기는 400~600만 쓰고, 위계는 굵기보다 크기와 회색 보조 글자로 만든다.
+깨끗하고 밝은 의료 앱. 흰 바탕에 파란 주 버튼 하나, 약 계열마다 연한 색 카드(초록·주황·보라·청록)로 구분하고, 그림자 없이 배경색 차이로 층을 나눈다. 글자 굵기는 400~600만 쓰고, 위계는 굵기보다 크기와 회색 보조 글자로 만든다.
 
 목표 사용자는 72세 김하늘 씨다. 휴대폰을 열고 3초 안에 다음 약과 복용 시간을 알 수 있어야 한다. 앱은 홈에서 시작해 두 갈래로 나뉜다. 유전자에 따른 복약 시간표는 화면 세 장이 순서대로 넘어간다: 입력 → 결과 카드 → 복약 시간표. 평소 복약 시간표는 화면 두 장이다: 입력 → 복약 시간표. 입력한 유전자·유전형이 표에 없으면 결과 카드 대신 평소 복약 시간표 입력으로 넘어간다. 화면마다 주소가 따로 있다(아래 '화면과 주소').
 
 참고한 디자인: Dribbble "Medication Reminder Mobile App"(https://dribbble.com/shots/23235852-Medication-Reminder-Mobile-App). 모양만 참고하고, 접근성과 수업 범위에 맞게 아래처럼 바꿨다.
 
-| 참고 이미지                                         | 우리 앱                                                      |
-| --------------------------------------------------- | ------------------------------------------------------------ |
-| 파란 주 버튼 + 그 아래 글자 버튼 하나               | 그대로 쓴다                                                  |
-| 약 종류마다 색 카드(주황 = 물약, 초록 = 캡슐)       | 추천 약 = 초록, 가상 약 나음정 = 주황, 판단 자료 없음 = 회색 |
-| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 초록·주황으로 바꿨다                        |
-| 연한 회색 보조 글자                                 | 더 진한 회색(#5F6672)으로 바꿨다                             |
-| 본문 약 16px                                        | 18px로 키웠다                                                |
-| SF Pro 계열 영문 글꼴                               | 한글이 비슷한 느낌인 Pretendard                              |
-| 하단 파란 탭 바, 지도, 약국 목록, 온라인 구매       | 쓰지 않는다                                                  |
+| 참고 이미지                                         | 우리 앱                                            |
+| --------------------------------------------------- | -------------------------------------------------- |
+| 파란 주 버튼 + 그 아래 글자 버튼 하나               | 그대로 쓴다                                        |
+| 약 종류마다 색 카드(주황 = 물약, 초록 = 캡슐)       | 약 계열마다 색(아래 Colors), 판단 자료 없음 = 회색 |
+| 연한 초록·주황 배지·아이콘 타일 위 흰 글자와 아이콘 | 대비가 낮아 진한 초록·주황·보라·청록으로 바꿨다    |
+| 연한 회색 보조 글자                                 | 더 진한 회색(#5F6672)으로 바꿨다                   |
+| 본문 약 16px                                        | 18px로 키웠다                                      |
+| SF Pro 계열 영문 글꼴                               | 한글이 비슷한 느낌인 Pretendard                    |
+| 하단 파란 탭 바, 지도, 약국 목록, 온라인 구매       | 쓰지 않는다                                        |
 
 ## Colors
 
@@ -258,13 +296,17 @@ components:
 - **Surface(#FFFFFF)**: 화면 바탕.
 - **Surface-muted(#F4F4F6)**: 입력 칸, 칩, 정보 상자, 목록 줄의 바탕. 흰 바탕 위에서 묶음을 나누는 회색이다.
 - **Border(#E6E7EB)**: 1px 구분선(divider)과, 흰 바탕 위에 흰 카드를 둘 때의 1px 테두리에만 쓴다.
-- **초록 테마(추천 약)**: 카드 바탕 #EAF4DF, 아이콘 타일과 배지 #3F7A16.
-- **주황 테마(가상 약 나음정)**: 카드 바탕 #FDEBE4, 아이콘 타일과 배지 #C2410C.
+- **약 계열 테마**: 비슷한 약끼리 한 계열로 묶고, 계열마다 색 하나를 쓴다. 계열은 약학적 분류(치료 목적)를 따르며 시트에는 없는 정보라 `src/lib/drugGroups.js`에서 정한다.
+  - **초록 테마(진통제: 코데인)**: 카드 바탕 #EAF4DF, 아이콘 타일과 배지 #3F7A16.
+  - **주황 테마(항암제: 카페시타빈, 이리노테칸 주사제)**: 카드 바탕 #FDEBE4, 아이콘 타일과 배지 #C2410C.
+  - **보라 테마(면역억제제: 아자티오프린, 타크로리무스 캡슐)**: 카드 바탕 #F1EAFB, 아이콘 타일과 배지 #6B3FA0.
+  - **청록 테마(항감염제: 에파비렌즈, 이소니아지드)**: 카드 바탕 #E0F2F1, 아이콘 타일과 배지 #0F766E.
+  - 계열이 정해지지 않은 약(평소 복약에서 직접 입력한 약 포함)은 계열 이름 없이 초록 카드로 보인다. 새 계열을 만들 때는 흰 글자가 진한 색 위에서 4.5:1 이상 읽히는지 확인한다(위 네 색은 5.2~7.4:1).
 - **회색 테마(판단 자료 없음, 시간을 정할 수 없음, 약이 없는 칸, 약 하나에 묶이지 않는 평소 복약 배너)**: 카드 바탕 #F4F4F6, 배지와 아이콘 타일 #5F6672.
 - **Warning 빨강(#C62828)**: 주의 문구의 아이콘과 '주의' 글자(warning-label)에만 쓴다. 상자 바탕은 #FDECEC.
 - **Backdrop(#D4E5B9 → #9FD0C6)**: 화면이 430px보다 넓을 때 앱 바깥 배경에 쓰는 연두→청록 그라데이션 `linear-gradient(160deg, #D4E5B9, #9FD0C6)`. page-backdrop-top이 시작 색, page-backdrop-bottom이 끝 색이다. 앱 안에는 그라데이션을 쓰지 않는다.
 
-같은 약은 모든 화면에서 같은 색이다. 결과 카드에서 초록이었던 약은 시간표에서도 초록이다.
+같은 약은 모든 화면에서 같은 색이다. 결과 카드에서 주황이었던 약은 시간표에서도 주황이다. 색만으로 계열을 알리지 않는다. 복용 카드의 보조 글에는 "항암제 · 아침 식사 30분 뒤"처럼 계열 이름을 함께 적고, 약을 고르는 화면에서는 계열 이름표(badge)를 붙인다.
 
 ## Typography
 
@@ -380,7 +422,7 @@ components:
 권고 문장 한두 줄                                      body-lg
 
 복용 정보                                            title-md
-┌ (알약) 추천 약 ─────────────────────┐              info-box, 맨 위에 icon-tile + title-sm
+┌ (알약) 추천 약 · 항암제 ─────────────┐              info-box, 맨 위에 계열 색 icon-tile + title-sm
 │ 복용 횟수                    1일 1회   │              label(왼쪽) / title-sm(오른쪽)
 │ 용량                     처방에 따름   │
 │ 복용 시점                       식후   │
@@ -422,7 +464,7 @@ components:
 [            처음으로            ]                     button-primary
 ```
 
-복용 카드는 시각 순서로 놓는다. 시간을 정할 수 없는 약은 med-card-empty에 badge-gray "시간을 정할 수 없음"으로 보여 준다. 위 시각은 모양을 보여 주는 예시이고, 실제 값은 시간표 규칙으로 계산한다.
+복용 카드는 시각 순서로 놓는다. 시간을 정할 수 없는 약은 med-card-empty에 badge-gray "시간을 정할 수 없음"으로 보여 준다. 위 시각과 초록·주황은 모양을 보여 주는 예시이고, 실제 값은 시간표 규칙으로 계산하며 카드 색은 약 계열 테마를 따른다.
 
 '처음으로'는 홈으로 이동한다.
 
@@ -482,7 +524,7 @@ components:
 
 ## Elevation & Depth
 
-그림자는 쓰지 않는다. 층은 배경색 차이로만 나눈다: 흰 바탕(#FFFFFF) → 회색 묶음(#F4F4F6) → 약 테마 카드(연한 초록·주황). 흰 바탕 위 흰 카드가 필요할 때만 1px #E6E7EB 테두리를 쓴다. 입력 칸과 칩에 초점이 가면 2px 파란 테두리(outline)를 2px 떨어뜨려 보여 준다.
+그림자는 쓰지 않는다. 층은 배경색 차이로만 나눈다: 흰 바탕(#FFFFFF) → 회색 묶음(#F4F4F6) → 약 테마 카드(연한 초록·주황·보라·청록). 흰 바탕 위 흰 카드가 필요할 때만 1px #E6E7EB 테두리를 쓴다. 입력 칸과 칩에 초점이 가면 2px 파란 테두리(outline)를 2px 떨어뜨려 보여 준다.
 
 ## Shapes
 
@@ -522,11 +564,11 @@ components:
 ## Do's and Don'ts
 
 - Do: 화면마다 파란 주 버튼은 하나만 둔다.
-- Do: 약마다 색 테마 하나를 정하고 모든 화면에서 같은 색을 쓴다(추천 약 초록, 나음정 주황).
+- Do: 비슷한 약은 한 계열로 묶어 색 테마 하나를 정하고 모든 화면에서 같은 색을 쓴다(진통제 초록, 항암제 주황, 면역억제제 보라, 항감염제 청록). 색과 함께 계열 이름도 글자로 적는다.
 - Do: 주의 문구는 빨간 아이콘 + '주의' 글자 + 문장을 함께 쓴다. 색만으로 주의를 알리지 않는다.
 - Do: 판단 자료가 없거나 시간을 정할 수 없을 때는 회색 카드와 회색 배지로 보여 준다.
 - Do: 누를 수 있는 것은 높이 44px 이상으로 만든다.
-- Don't: 참고 이미지의 연한 초록·주황 배지·타일 위 흰 글자를 그대로 쓰지 않는다(거의 안 보인다). 진한 초록·주황을 쓴다.
+- Don't: 참고 이미지의 연한 초록·주황 배지·타일 위 흰 글자를 그대로 쓰지 않는다(거의 안 보인다). 진한 초록·주황·보라·청록을 쓴다.
 - Don't: #9A9A9F처럼 연한 회색 글자를 쓰지 않는다. 보조 글자는 #5F6672.
 - Don't: 하단 탭 바, 지도, 약국 목록, 구매 버튼, 프로필 사진, 의사 사진은 만들지 않는다. 참고 이미지에만 있는 기능이다.
 - Don't: 휴대폰 상태 표시줄과 휴대폰 테두리를 그리지 않는다.

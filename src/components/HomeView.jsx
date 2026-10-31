@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { ChevronRight, Clock, Dna } from "lucide-react";
 import { InfoNotice } from "@/components/InfoNotice";
-
-const THEME = {
-  green: { card: "bg-green-soft", badge: "bg-green-strong", tile: "bg-green-strong" },
-  gray: { card: "bg-surface-muted", badge: "bg-ink-secondary", tile: "bg-ink-secondary" },
-};
+import { THEME_CLASSES } from "@/lib/theme";
 
 /** 홈의 배너. 카드 전체가 하나의 링크라 안쪽에는 span만 쓴다 */
 function Banner({ theme, badge, title, description, action, icon, href }) {
-  const color = THEME[theme];
+  const color = THEME_CLASSES[theme];
 
   return (
     <Link

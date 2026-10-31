@@ -113,6 +113,12 @@ export function UsualScheduleView({ drugs, times, backHref }) {
           >
             홈으로
           </Link>
+          <Link
+            href={backHref}
+            className="text-primary text-button flex h-12 w-full items-center justify-center"
+          >
+            약 다시 입력하기
+          </Link>
         </div>
       </div>
     </>

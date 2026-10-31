@@ -477,6 +477,7 @@ components:
 
 [ (i) 실제 복용 시간은 의료진 지시를 따릅니다 ]           info-box
 [            홈으로            ]                       button-primary
+[         약 다시 입력하기         ]                      button-text, 입력 화면으로(입력한 약 유지)
 ```
 
 ## Elevation & Depth

@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Moon, Sun, Utensils } from "lucide-react";
+import { Chip } from "@/components/Chip";
 import { listGenes, listGenotypes } from "@/lib/genes";
-import { cn } from "@/lib/utils";
+import { DEFAULT_LIFE_TIMES } from "@/lib/time";
 import type { ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {
@@ -22,38 +23,6 @@ const TIME_FIELDS = [
 
 type TimeKey = (typeof TIME_FIELDS)[number]["key"];
 
-const DEFAULT_TIMES: Record<TimeKey, string> = {
-  wakeTime: "07:00",
-  sleepTime: "23:00",
-  breakfast: "08:00",
-  lunch: "13:00",
-  dinner: "19:00",
-};
-
-function Chip({
-  selected,
-  onClick,
-  children,
-}: {
-  selected: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      onClick={onClick}
-      className={cn(
-        "text-title-sm h-14 rounded-md px-3",
-        selected ? "bg-primary text-on-primary" : "bg-surface-muted text-ink",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
-
 export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
   const [gene, setGene] = useState(initial?.gene ?? "");
   const [genotype, setGenotype] = useState(initial?.genotype ?? "");
@@ -66,7 +35,7 @@ export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
           lunch: initial.lunch,
           dinner: initial.dinner,
         }
-      : DEFAULT_TIMES,
+      : DEFAULT_LIFE_TIMES,
   );
 
   const genotypes = listGenotypes(gene);

@@ -17,6 +17,7 @@ type Step = "home" | "usual" | "input" | "result" | "schedule";
 export default function Home() {
   const [step, setStep] = useState<Step>("home");
   const [input, setInput] = useState<ScheduleInput | null>(null);
+  const [usualDrugs, setUsualDrugs] = useState<string[]>([]);
   const entry = input ? findGeneEntry(input.gene, input.genotype) : null;
 
   if (step === "home") {
@@ -24,7 +25,13 @@ export default function Home() {
   }
 
   if (step === "usual") {
-    return <UsualScheduleView onBack={() => setStep("home")} />;
+    return (
+      <UsualScheduleView
+        selected={usualDrugs}
+        onChange={setUsualDrugs}
+        onBack={() => setStep("home")}
+      />
+    );
   }
 
   if (input && step === "result") {

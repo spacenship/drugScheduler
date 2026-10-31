@@ -21,15 +21,22 @@ export interface GeneEntry {
   schedule: Schedule;
 }
 
-/** 입력 화면에서 받는 값. 시각은 "HH:mm" 형식 */
-export interface ScheduleInput {
-  gene: string;
-  genotype: string;
+/** data.json의 drugs[약 명칭] 한 건. 유전자와 무관한 약 기본 정보 */
+export type Drug = Omit<GeneEntry, "gene" | "genotype" | "details">;
+
+/** 생활 시간. 시각은 "HH:mm" 형식 */
+export interface LifeTimes {
   wakeTime: string;
   sleepTime: string;
   breakfast: string;
   lunch: string;
   dinner: string;
+}
+
+/** 입력 화면에서 받는 값 */
+export interface ScheduleInput extends LifeTimes {
+  gene: string;
+  genotype: string;
 }
 
 /** 하루 시간표의 복용 한 번 */

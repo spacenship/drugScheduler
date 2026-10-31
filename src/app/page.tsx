@@ -1,4 +1,5 @@
 import { Info } from "lucide-react";
+import { GenotypeLookup } from "@/components/GenotypeLookup";
 
 export default function Home() {
   return (
@@ -12,6 +13,8 @@ export default function Home() {
         <h1 className="text-display">복약 시간표 만들기</h1>
         <p className="text-body-md text-ink-secondary">유전형과 생활 시간을 알려 주세요</p>
       </div>
+
+      <GenotypeLookup />
     </main>
   );
 }

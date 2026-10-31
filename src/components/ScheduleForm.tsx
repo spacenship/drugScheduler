@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import type { ScheduleInput } from "@/types";
 
 interface ScheduleFormProps {
+  /** 뒤로 돌아왔을 때 앞서 입력한 값을 채운다 */
+  initial: ScheduleInput | null;
   onSubmit: (input: ScheduleInput) => void;
 }
 
@@ -52,10 +54,20 @@ function Chip({
   );
 }
 
-export function ScheduleForm({ onSubmit }: ScheduleFormProps) {
-  const [gene, setGene] = useState("");
-  const [genotype, setGenotype] = useState("");
-  const [times, setTimes] = useState(DEFAULT_TIMES);
+export function ScheduleForm({ initial, onSubmit }: ScheduleFormProps) {
+  const [gene, setGene] = useState(initial?.gene ?? "");
+  const [genotype, setGenotype] = useState(initial?.genotype ?? "");
+  const [times, setTimes] = useState<Record<TimeKey, string>>(
+    initial
+      ? {
+          wakeTime: initial.wakeTime,
+          sleepTime: initial.sleepTime,
+          breakfast: initial.breakfast,
+          lunch: initial.lunch,
+          dinner: initial.dinner,
+        }
+      : DEFAULT_TIMES,
+  );
 
   const genotypes = listGenotypes(gene);
   const canSubmit = gene !== "" && genotype !== "" && Object.values(times).every(Boolean);

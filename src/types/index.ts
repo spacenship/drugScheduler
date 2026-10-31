@@ -38,3 +38,17 @@ export interface ScheduleInput {
   lunch: string;
   dinner: string;
 }
+
+/** 하루 시간표의 복용 한 번 */
+export interface DoseSlot {
+  /** 하루 0시부터의 분. 자정을 넘기면 1440 이상 */
+  minutes: number;
+  /** "HH:mm" */
+  time: string;
+  /** 시각을 정한 이유. 예: "아침 식사 30분 뒤" */
+  note: string;
+}
+
+/** 시간표 계산 결과. 시각을 정할 수 없으면 이유를 돌려준다 */
+export type ScheduleResult =
+  { status: "ok"; doses: DoseSlot[] } | { status: "unschedulable"; reason: string };

@@ -4,23 +4,23 @@
  * @type {import("@/types").DrugGroup[]}
  */
 export const DRUG_GROUPS = [
-  { key: "analgesic", label: "진통제", theme: "green", drugs: ["코데인"] },
+  { key: "analgesic", label: "진통제", theme: "pink", drugs: ["코데인"] },
   {
     key: "anticancer",
     label: "항암제",
-    theme: "orange",
+    theme: "purple",
     drugs: ["카페시타빈", "이리노테칸 주사제"],
   },
   {
     key: "immunosuppressant",
     label: "면역억제제",
-    theme: "purple",
+    theme: "orange",
     drugs: ["아자티오프린", "타크로리무스 캡슐"],
   },
   {
     key: "anti-infective",
     label: "항감염제",
-    theme: "teal",
+    theme: "sky",
     drugs: ["에파비렌즈", "이소니아지드"],
   },
 ];
